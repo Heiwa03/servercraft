@@ -116,13 +116,13 @@ fieldset[disabled] .btn-default.active {
 }
 .btn-primary:hover,
 .btn-primary:focus {
-  background-color: #265a88;
-  background-position: 0 -15px;
+    background-color: #8fa38a;
+    background-position: 0 -15px;
 }
 .btn-primary:active,
 .btn-primary.active {
-  background-color: #265a88;
-  border-color: #245580;
+    background-color: #8fa38a;
+    border-color: #647a67;
 }
 .btn-primary.disabled,
 .btn-primary[disabled],
@@ -142,8 +142,8 @@ fieldset[disabled] .btn-primary:active,
 .btn-primary.disabled.active,
 .btn-primary[disabled].active,
 fieldset[disabled] .btn-primary.active {
-  background-color: #265a88;
-  background-image: none;
+    background-color: #8fa38a;
+    background-image: none;
 }
 .btn-success {
   background-image: -webkit-linear-gradient(top, #5cb85c 0%, #419641 100%);
