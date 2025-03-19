@@ -1,0 +1,182 @@
+﻿<!-- Views/Product/Details.cshtml -->
+@model servercraft.Models.ViewModels.ServerViewModel
+@{
+    ViewBag.Title = Model.Name;
+}
+
+<div class="container padding-vertical">
+    <div class="row">
+        <div class="col-md-6">
+            <div class="product-image-container">
+                <img src="@Model.ImageUrl" alt="@Model.Name" class="img-responsive center-block" />
+                @if (!string.IsNullOrEmpty(Model.Badge))
+                {
+                    <span class="badge product-badge">@Model.Badge</span>
+                }
+            </div>
+        </div>
+        <div class="col-md-6">
+            <h1>@Model.Name</h1>
+            <p class="lead">@Model.Description</p>
+
+            <div class="price-container">
+                <span class="price">$@Model.Price.ToString("N0")</span>
+                @if (Model.OldPrice.HasValue)
+                {
+                    <span class="old-price">$@Model.OldPrice.Value.ToString("N0")</span>
+                }
+            </div>
+
+            <div class="specs-container">
+                <h3>Key Specifications:</h3>
+                <ul class="specs-list">
+                    @foreach (var spec in Model.Specs)
+                    {
+                        <li><i class="glyphicon glyphicon-ok text-primary"></i> @spec</li>
+                    }
+                </ul>
+            </div>
+
+            <div class="actions-container">
+                <button class="btn btn-primary btn-lg" onclick="addToCart('@Model.Id')">Add to Cart</button>
+                <button class="btn btn-default btn-lg">Request Quote</button>
+            </div>
+
+            <div class="stock-info">
+                <p>In stock: @(Model.InStock ? "Yes" : "No")</p>
+                <p>Estimated delivery: 3-5 business days</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="row padding-vertical">
+        <div class="col-md-12">
+            <ul class="nav nav-tabs" role="tablist">
+                <li role="presentation" class="active">
+                    <a href="#specifications" aria-controls="specifications" role="tab" data-toggle="tab">Specifications</a>
+                </li>
+                <li role="presentation">
+                    <a href="#features" aria-controls="features" role="tab" data-toggle="tab">Features</a>
+                </li>
+                <li role="presentation">
+                    <a href="#support" aria-controls="support" role="tab" data-toggle="tab">Support</a>
+                </li>
+            </ul>
+
+            <div class="tab-content">
+                <div role="tabpanel" class="tab-pane active" id="specifications">
+                    <div class="panel panel-default">
+                        <div class="panel-body">
+                            <h3>Technical Specifications</h3>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <h4>Processor</h4>
+                                    <p>@(Model.FullSpecs?.Processor ?? "Intel Xeon Processor")</p>
+                                </div>
+                                <div class="col-md-6">
+                                    <h4>Memory</h4>
+                                    <p>@(Model.FullSpecs?.Memory ?? "64GB DDR4")</p>
+                                </div>
+                                <div class="col-md-6">
+                                    <h4>Storage</h4>
+                                    <p>@(Model.FullSpecs?.Storage ?? "2TB SSD")</p>
+                                </div>
+                                <div class="col-md-6">
+                                    <h4>Network</h4>
+                                    <p>@(Model.FullSpecs?.Network ?? "Dual 10GbE")</p>
+                                </div>
+                                <div class="col-md-6">
+                                    <h4>Power Supply</h4>
+                                    <p>@(Model.FullSpecs?.Power ?? "Redundant 750W")</p>
+                                </div>
+                                <div class="col-md-6">
+                                    <h4>Form Factor</h4>
+                                    <p>@(Model.FullSpecs?.FormFactor ?? "2U Rack")</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div role="tabpanel" class="tab-pane" id="features">
+                    <div class="panel panel-default">
+                        <div class="panel-body">
+                            <h3>Key Features</h3>
+                            <ul class="feature-list">
+                                <li><i class="glyphicon glyphicon-star text-primary"></i> High-performance computing for enterprise workloads</li>
+                                <li><i class="glyphicon glyphicon-star text-primary"></i> Redundant power supplies for maximum uptime</li>
+                                <li><i class="glyphicon glyphicon-star text-primary"></i> Advanced cooling system for optimal thermal management</li>
+                                <li><i class="glyphicon glyphicon-star text-primary"></i> Remote management capabilities</li>
+                                <li><i class="glyphicon glyphicon-star text-primary"></i> Expandable storage options</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div role="tabpanel" class="tab-pane" id="support">
+                    <div class="panel panel-default">
+                        <div class="panel-body">
+                            <h3>Support Options</h3>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="panel panel-default">
+                                        <div class="panel-body">
+                                            <h4>Standard Support</h4>
+                                            <p>Included with purchase: 9x5 technical support, 3-year warranty</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="panel panel-default">
+                                        <div class="panel-body">
+                                            <h4>Premium Support</h4>
+                                            <p>24x7 technical support, 5-year warranty, 4-hour response time</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="panel panel-default">
+                                        <div class="panel-body">
+                                            <h4>Enterprise Support</h4>
+                                            <p>24x7 technical support, 7-year warranty, 2-hour response time, dedicated support engineer</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <h2>Related Products</h2>
+            <div class="row">
+                @foreach (var server in ViewBag.RelatedServers)
+                {
+                    <div class="col-md-3">
+                        @Html.Partial("_ServerCard", server)
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts {
+    <script>
+        function addToCart(id) {
+            $.ajax({
+                url: '@Url.Action("AddToCart", "Cart")',
+                type: 'POST',
+                data: { id: id },
+                success: function (result) {
+                    if (result.success) {
+                        $('#cart-count').text(result.cartCount);
+                        alert('Product added to cart!');
+                    }
+                }
+            });
+        }
+    </script>
+}

@@ -1,0 +1,169 @@
+﻿<!-- Views/Cart/Index.cshtml -->
+@model servercraft.Models.ViewModels.CartViewModel
+@{
+    ViewBag.Title = "Your Cart";
+}
+
+<div class="container padding-vertical">
+    <h1>Your Cart</h1>
+
+    <div class="row">
+        <div class="col-md-8">
+            @if (Model.Items.Count > 0)
+            {
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <div class="row">
+                            <div class="col-md-6">Product</div>
+                            <div class="col-md-2 text-center">Price</div>
+                            <div class="col-md-2 text-center">Quantity</div>
+                            <div class="col-md-2 text-right">Total</div>
+                        </div>
+                    </div>
+                    <div class="panel-body">
+                        @foreach (var item in Model.Items)
+                        {
+                            <div class="row cart-item">
+                                <div class="col-md-6">
+                                    <div class="media">
+                                        <div class="media-left">
+                                            <img class="media-object" src="@item.ImageUrl" alt="@item.Name" style="width: 64px; height: 64px;" />
+                                        </div>
+                                        <div class="media-body">
+                                            <h4 class="media-heading">@item.Name</h4>
+                                            <button type="button" class="btn btn-link btn-sm" onclick="removeItem('@item.ServerId')">
+                                                <i class="glyphicon glyphicon-trash"></i> Remove
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-2 text-center">
+                                    $@item.Price.ToString("N0")
+                                </div>
+                                <div class="col-md-2 text-center">
+                                    <div class="input-group">
+                                        <span class="input-group-btn">
+                                            <button class="btn btn-default" type="button" onclick="decrementQuantity('@item.ServerId')">-</button>
+                                        </span>
+                                        <input type="text" class="form-control text-center" value="@item.Quantity" id="qty-@item.ServerId" />
+                                        <span class="input-group-btn">
+                                            <button class="btn btn-default" type="button" onclick="incrementQuantity('@item.ServerId')">+</button>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="col-md-2 text-right">
+                                    $@item.Total.ToString("N0")
+                                </div>
+                            </div>
+                            <hr />
+                        }
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <a href="@Url.Action("Index", "Product")" class="btn btn-default">Continue Shopping</a>
+                    </div>
+                    <div class="col-md-6 text-right">
+                        <button type="button" class="btn btn-default" onclick="updateCart()">Update Cart</button>
+                    </div>
+                </div>
+            }
+            else
+            {
+                <div class="panel panel-default">
+                    <div class="panel-body text-center">
+                        <h2>Your cart is empty</h2>
+                        <p>Looks like you haven't added any servers to your cart yet.</p>
+                        <a href="@Url.Action("Index", "Product")" class="btn btn-primary">Browse Products</a>
+                    </div>
+                </div>
+            }
+        </div>
+
+        <div class="col-md-4">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Order Summary</h3>
+                </div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-md-6">Subtotal</div>
+                        <div class="col-md-6 text-right">$@Model.Subtotal.ToString("N0")</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">Shipping</div>
+                        <div class="col-md-6 text-right">$@Model.Shipping.ToString("N0")</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">Tax</div>
+                        <div class="col-md-6 text-right">$@Model.Tax.ToString("N2")</div>
+                    </div>
+                    <hr />
+                    <div class="row">
+                        <div class="col-md-6"><strong>Total</strong></div>
+                        <div class="col-md-6 text-right"><strong>$@Model.Total.ToString("N2")</strong></div>
+                    </div>
+                </div>
+                <div class="panel-footer">
+                    <div class="form-group">
+                        <label for="coupon">Coupon Code</label>
+                        <div class="input-group">
+                            <input type="text" class="form-control" id="coupon" placeholder="Enter coupon">
+                            <span class="input-group-btn">
+                                <button class="btn btn-default" type="button">Apply</button>
+                            </span>
+                        </div>
+                    </div>
+                    <button type="button" class="btn btn-primary btn-block">Proceed to Checkout</button>
+                </div>
+            </div>
+
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <h4>Need Help?</h4>
+                    <p>Our sales team is ready to assist you with your purchase.</p>
+                    <button type="button" class="btn btn-default btn-block">Contact Sales</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts {
+    <script>
+        function removeItem(id) {
+            if (confirm('Are you sure you want to remove this item from your cart?')) {
+                window.location.href = '@Url.Action("UpdateQuantity", "Cart")?id=' + id + '&quantity=0';
+            }
+        }
+
+        function incrementQuantity(id) {
+            var qtyInput = $('#qty-' + id);
+            var currentQty = parseInt(qtyInput.val());
+            qtyInput.val(currentQty + 1);
+        }
+
+        function decrementQuantity(id) {
+            var qtyInput = $('#qty-' + id);
+            var currentQty = parseInt(qtyInput.val());
+            if (currentQty > 1) {
+                qtyInput.val(currentQty - 1);
+            }
+        }
+
+        function updateCart() {
+            var updates = [];
+            $('.cart-item').each(function() {
+                var id = $(this).find('input[id^="qty-"]').attr('id').replace('qty-', '');
+                var qty = $(this).find('input[id^="qty-"]').val();
+                updates.push({ id: id, quantity: qty });
+            });
+
+            // In a real application, you would send this data to the server
+            // For simplicity, we'll just reload the page
+            alert('Cart updated!');
+            window.location.reload();
+        }
+    </script>
+}

@@ -1,0 +1,27 @@
+﻿<!-- Views/Shared/_ServerCard.cshtml -->
+@model servercraft.Models.ViewModels.ServerViewModel
+
+<div class="panel panel-default server-card">
+    <div class="panel-body text-center">
+        <div class="server-image-container">
+            <img src="@Model.ImageUrl" alt="@Model.Name" class="img-responsive center-block" />
+            @if (!string.IsNullOrEmpty(Model.Badge))
+            {
+                <span class="badge server-badge">@Model.Badge</span>
+            }
+        </div>
+        <h3 class="server-title">@Model.Name</h3>
+        <p class="server-description">@Model.Description</p>
+        <div class="server-price">
+            <span class="price">$@Model.Price.ToString("N0")</span>
+            @if (Model.OldPrice.HasValue)
+            {
+                <span class="old-price">$@Model.OldPrice.Value.ToString("N0")</span>
+            }
+        </div>
+        <div class="server-actions">
+            <a href="@Url.Action("Details", "Product", new { id = Model.Id })" class="btn btn-default btn-block">View Details</a>
+            <button type="button" class="btn btn-primary btn-block" onclick="addToCart('@Model.Id')">Add to Cart</button>
+        </div>
+    </div>
+</div>

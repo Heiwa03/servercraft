@@ -1,0 +1,140 @@
+﻿/* Content/css/site.css */
+body {
+    padding-top: 50px;
+    padding-bottom: 20px;
+}
+
+/* Set padding to keep content from hitting the edges */
+.body-content {
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+/* Override the default bootstrap behavior where horizontal description lists 
+   will truncate terms that are too long to fit in the left column 
+*/
+.dl-horizontal dt {
+    white-space: normal;
+}
+
+/* Custom styles */
+.padding-vertical {
+    padding-top: 30px;
+    padding-bottom: 30px;
+}
+
+.bg-light-gray {
+    background-color: #f5f5f5;
+}
+
+.brand-primary {
+    color: #337ab7;
+}
+
+/* Server card styles */
+.server-card {
+    transition: all 0.3s ease;
+    height: 100%;
+    margin-bottom: 20px;
+}
+
+    .server-card:hover {
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+.server-image-container {
+    height: 200px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    margin-bottom: 15px;
+}
+
+.server-badge {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background-color: #337ab7;
+}
+
+.server-title {
+    font-size: 18px;
+    font-weight: bold;
+    margin-top: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.server-description {
+    height: 40px;
+    overflow: hidden;
+    margin-bottom: 15px;
+}
+
+.server-price {
+    margin-bottom: 15px;
+}
+
+.price {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.old-price {
+    text-decoration: line-through;
+    color: #999;
+    margin-left: 10px;
+}
+
+.server-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+/* Product details styles */
+.product-image-container {
+    background-color: #f5f5f5;
+    padding: 20px;
+    border-radius: 4px;
+    position: relative;
+}
+
+.product-badge {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background-color: #337ab7;
+}
+
+.specs-list {
+    list-style: none;
+    padding-left: 0;
+}
+
+    .specs-list li {
+        margin-bottom: 8px;
+    }
+
+.actions-container {
+    margin: 20px 0;
+}
+
+.stock-info {
+    color: #666;
+    font-size: 14px;
+}
+
+/* Cart styles */
+.cart-item {
+    padding: 15px 0;
+}
+
+/* Footer styles */
+.footer {
+    border-top: 1px solid #ddd;
+    padding: 20px 0;
+    margin-top: 30px;
+}

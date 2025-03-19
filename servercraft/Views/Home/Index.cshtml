@@ -1,0 +1,72 @@
+﻿<!-- Views/Home/Index.cshtml -->
+@model List<servercraft.Models.ViewModels.ServerViewModel>
+@{
+    ViewBag.Title = "Home";
+}
+
+<div class="jumbotron">
+    <div class="container text-center">
+        <h1>Enterprise Server Solutions</h1>
+        <p class="lead">High-performance servers and IT infrastructure for your business needs</p>
+        <div class="row">
+            <div class="col-md-6 col-md-offset-3">
+                <form class="form-inline">
+                    <div class="form-group" style="width: 70%;">
+                        <input type="text" class="form-control" style="width: 100%;" placeholder="Search for servers...">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Search</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-3">
+            @Html.Partial("_SearchFilter")
+        </div>
+        <div class="col-md-9">
+            <h2>Featured Servers</h2>
+            <div class="row">
+                @foreach (var server in Model)
+                {
+                    <div class="col-md-4">
+                        @Html.Partial("_ServerCard", server)
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid bg-light-gray">
+    <div class="container padding-vertical">
+        <div class="row">
+            <div class="col-md-4">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <h3>Enterprise Support</h3>
+                        <p>24/7 technical support for your server infrastructure</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <h3>Custom Solutions</h3>
+                        <p>Tailored server configurations for your specific needs</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <h3>Warranty & Service</h3>
+                        <p>Extended warranty options and on-site service available</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
