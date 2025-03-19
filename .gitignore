@@ -32,5 +32,3 @@ servercraft/msbuild.wrn
 
 # Visual Studio 2015
 .vs/
-servercraft/App_Data/DefaultConnection.mdf
-servercraft/App_Data/DefaultConnection_log.ldf
