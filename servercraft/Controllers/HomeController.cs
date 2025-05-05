@@ -21,6 +21,16 @@ namespace servercraft.Controllers
             return View(featuredServers);
         }
 
+        public ActionResult About()
+        {
+            return View();
+        }
+
+        public ActionResult Contact()
+        {
+            return View();
+        }
+
         protected override void Dispose(bool disposing)
         {
             if (disposing)

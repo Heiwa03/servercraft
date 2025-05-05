@@ -1,0 +1,162 @@
+/* About Page Styles */
+.padding-vertical {
+    padding: 50px 0;
+}
+
+/* Mission Section */
+.mission-section {
+    margin: 50px 0;
+}
+
+.mission-stats {
+    background: #f8f9fa;
+    padding: 30px;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.stat-box {
+    text-align: center;
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+.stat-box h3 {
+    font-size: 36px;
+    color: #337ab7;
+    margin: 0;
+}
+
+.stat-box p {
+    margin: 10px 0 0;
+    color: #666;
+}
+
+/* Values Section */
+.values-section {
+    margin: 50px 0;
+    padding: 30px 0;
+    background: #f8f9fa;
+}
+
+.value-card {
+    text-align: center;
+    padding: 30px 20px;
+    transition: transform 0.3s ease;
+}
+
+.value-card:hover {
+    transform: translateY(-10px);
+}
+
+.value-card i {
+    font-size: 48px;
+    color: #337ab7;
+    margin-bottom: 20px;
+}
+
+.value-card h3 {
+    margin: 20px 0;
+    color: #333;
+}
+
+.value-card p {
+    color: #666;
+}
+
+/* Team Section */
+.team-section {
+    margin: 50px 0;
+}
+
+.team-member {
+    text-align: center;
+    padding: 20px;
+}
+
+.team-member img {
+    width: 200px;
+    height: 200px;
+    object-fit: cover;
+    border: 5px solid #fff;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    transition: transform 0.3s ease;
+}
+
+.team-member img.hover {
+    transform: scale(1.05);
+}
+
+.team-member h3 {
+    margin: 20px 0 5px;
+    color: #333;
+}
+
+.team-member .title {
+    color: #337ab7;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.team-member p {
+    color: #666;
+}
+
+/* Partners Section */
+.partners-section {
+    margin: 50px 0;
+    padding: 30px 0;
+    background: #f8f9fa;
+}
+
+.partner-logos {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 30px;
+    margin-top: 30px;
+}
+
+.partner-logos img {
+    height: 50px;
+    opacity: 0.7;
+    transition: opacity 0.3s ease;
+}
+
+.partner-logos img:hover {
+    opacity: 1;
+}
+
+/* Contact CTA */
+.contact-cta {
+    margin: 50px 0;
+    padding: 50px 0;
+    background: #337ab7;
+    color: #fff;
+    border-radius: 5px;
+}
+
+.contact-cta h2 {
+    margin-bottom: 20px;
+}
+
+.contact-cta p {
+    margin-bottom: 30px;
+    font-size: 18px;
+}
+
+.contact-cta .btn {
+    background: #fff;
+    color: #337ab7;
+    border: none;
+    padding: 15px 30px;
+    font-size: 18px;
+    transition: all 0.3s ease;
+}
+
+.contact-cta .btn:hover {
+    background: #f8f9fa;
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+} 

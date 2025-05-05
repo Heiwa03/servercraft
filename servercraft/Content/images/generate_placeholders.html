@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Generate Placeholder Images</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .container { max-width: 800px; margin: 0 auto; }
+        .image-container { margin: 20px 0; }
+        img { margin: 10px; border: 1px solid #ccc; }
+        button { padding: 10px 20px; margin: 10px 0; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Placeholder Image Generator</h1>
+        
+        <h2>Team Member Photos</h2>
+        <div class="image-container">
+            <img id="ceo" width="200" height="200" />
+            <img id="cto" width="200" height="200" />
+            <img id="support" width="200" height="200" />
+        </div>
+
+        <h2>Partner Logos</h2>
+        <div class="image-container">
+            <img id="dell" width="150" height="50" />
+            <img id="hp" width="150" height="50" />
+            <img id="lenovo" width="150" height="50" />
+            <img id="cisco" width="150" height="50" />
+            <img id="ibm" width="150" height="50" />
+        </div>
+
+        <button onclick="generateImages()">Generate Images</button>
+        <button onclick="downloadImages()">Download All Images</button>
+    </div>
+
+    <script>
+        function generateImages() {
+            // Team member photos
+            document.getElementById('ceo').src = `https://ui-avatars.com/api/?name=John+Smith&background=0D8ABC&color=fff&size=200`;
+            document.getElementById('cto').src = `https://ui-avatars.com/api/?name=Sarah+Johnson&background=0D8ABC&color=fff&size=200`;
+            document.getElementById('support').src = `https://ui-avatars.com/api/?name=Michael+Brown&background=0D8ABC&color=fff&size=200`;
+
+            // Partner logos
+            document.getElementById('dell').src = `https://via.placeholder.com/150x50/0D8ABC/FFFFFF?text=Dell`;
+            document.getElementById('hp').src = `https://via.placeholder.com/150x50/0D8ABC/FFFFFF?text=HP`;
+            document.getElementById('lenovo').src = `https://via.placeholder.com/150x50/0D8ABC/FFFFFF?text=Lenovo`;
+            document.getElementById('cisco').src = `https://via.placeholder.com/150x50/0D8ABC/FFFFFF?text=Cisco`;
+            document.getElementById('ibm').src = `https://via.placeholder.com/150x50/0D8ABC/FFFFFF?text=IBM`;
+        }
+
+        function downloadImages() {
+            const images = [
+                { id: 'ceo', filename: 'ceo.jpg' },
+                { id: 'cto', filename: 'cto.jpg' },
+                { id: 'support', filename: 'support.jpg' },
+                { id: 'dell', filename: 'dell.png' },
+                { id: 'hp', filename: 'hp.png' },
+                { id: 'lenovo', filename: 'lenovo.png' },
+                { id: 'cisco', filename: 'cisco.png' },
+                { id: 'ibm', filename: 'ibm.png' }
+            ];
+
+            images.forEach(img => {
+                const link = document.createElement('a');
+                link.href = document.getElementById(img.id).src;
+                link.download = img.filename;
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            });
+        }
+
+        // Generate images on page load
+        window.onload = generateImages;
+    </script>
+</body>
+</html> 
