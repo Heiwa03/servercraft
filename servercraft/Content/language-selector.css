@@ -1,0 +1,40 @@
+.language-selector .dropdown-toggle {
+    padding: 15px;
+}
+
+.language-selector .dropdown-toggle img {
+    height: 16px;
+    margin-right: 5px;
+    vertical-align: middle;
+}
+
+.language-selector .dropdown-menu {
+    min-width: 150px;
+}
+
+.language-selector .dropdown-menu > li {
+    padding: 5px 0;
+}
+
+.language-selector .dropdown-menu > li > a {
+    display: inline-block;
+    padding: 3px 20px;
+}
+
+.language-selector .dropdown-menu > li > img {
+    height: 16px;
+    margin-left: 5px;
+    vertical-align: middle;
+}
+
+.language-selector .dropdown-menu > li:hover {
+    background-color: #f5f5f5;
+}
+
+.language-selector .dropdown-menu > li > a:hover {
+    background-color: transparent;
+}
+
+.language-selector .caret {
+    margin-left: 5px;
+} 

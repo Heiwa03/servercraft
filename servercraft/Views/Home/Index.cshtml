@@ -1,20 +1,20 @@
 ﻿<!-- Views/Home/Index.cshtml -->
 @model List<servercraft.Models.ViewModels.ServerViewModel>
 @{
-    ViewBag.Title = "Home";
+    ViewBag.Title = SharedResource.Home;
 }
 
 <div class="jumbotron">
     <div class="container text-center">
-        <h1>Enterprise Server Solutions</h1>
-        <p class="lead">High-performance servers and IT infrastructure for your business needs</p>
+        <h1>@SharedResource.EnterpriseServerSolutions</h1>
+        <p class="lead">@SharedResource.EnterpriseServerSolutionsMessage</p>
         <div class="row">
             <div class="col-md-6 col-md-offset-3">
                 <form class="form-inline">
                     <div class="form-group" style="width: 70%;">
-                        <input type="text" class="form-control" style="width: 100%;" placeholder="Search for servers...">
+                        <input type="text" class="form-control" style="width: 100%;" placeholder="@SharedResource.SearchForServers">
                     </div>
-                    <button type="submit" class="btn btn-primary">Search</button>
+                    <button type="submit" class="btn btn-primary">@SharedResource.Search</button>
                 </form>
             </div>
         </div>
@@ -27,7 +27,7 @@
             @Html.Partial("_SearchFilter")
         </div>
         <div class="col-md-9">
-            <h2>Featured Servers</h2>
+            <h2>@SharedResource.FeaturedServers</h2>
             <div class="row">
                 @foreach (var server in Model)
                 {
@@ -46,24 +46,24 @@
             <div class="col-md-4">
                 <div class="panel panel-default">
                     <div class="panel-body">
-                        <h3>Enterprise Support</h3>
-                        <p>24/7 technical support for your server infrastructure</p>
+                        <h3>@SharedResource.EnterpriseSupport</h3>
+                        <p>@SharedResource.EnterpriseSupportMessage</p>
                     </div>
                 </div>
             </div>
             <div class="col-md-4">
                 <div class="panel panel-default">
                     <div class="panel-body">
-                        <h3>Custom Solutions</h3>
-                        <p>Tailored server configurations for your specific needs</p>
+                        <h3>@SharedResource.CustomSolutions</h3>
+                        <p>@SharedResource.CustomSolutionsMessage</p>
                     </div>
                 </div>
             </div>
             <div class="col-md-4">
                 <div class="panel panel-default">
                     <div class="panel-body">
-                        <h3>Warranty & Service</h3>
-                        <p>Extended warranty options and on-site service available</p>
+                        <h3>@SharedResource.WarrantyAndService</h3>
+                        <p>@SharedResource.WarrantyAndServiceMessage</p>
                     </div>
                 </div>
             </div>

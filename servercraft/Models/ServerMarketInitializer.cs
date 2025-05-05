@@ -2,13 +2,21 @@
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.Threading.Tasks;
 using servercraft.Models.Domain;
+using servercraft.Models.Repositories;
 
 namespace servercraft.Models
 {
     public class ServerMarketInitializer : DropCreateDatabaseIfModelChanges<ServerMarketContext>
     {
         protected override void Seed(ServerMarketContext context)
+        {
+            var unitOfWork = new UnitOfWork(context);
+            SeedAsync(unitOfWork).Wait();
+        }
+
+        private async Task SeedAsync(IUnitOfWork unitOfWork)
         {
             var servers = new List<Server>
             {
@@ -49,11 +57,13 @@ namespace servercraft.Models
                         Power = "Dual 500W Redundant Power Supplies",
                         FormFactor = "2U Rack"
                     }
-                },
-                // Add more servers here
+                }
             };
 
-            servers.ForEach(s => context.Servers.Add(s));
+            foreach (var server in servers)
+            {
+                await unitOfWork.Servers.AddAsync(server);
+            }
 
             // Add specifications for each server
             var specs1 = new List<ServerSpecification>
@@ -74,10 +84,17 @@ namespace servercraft.Models
                 new ServerSpecification { ServerId = "server-2", Description = "iLO Advanced Management" }
             };
 
-            specs1.ForEach(s => context.ServerSpecifications.Add(s));
-            specs2.ForEach(s => context.ServerSpecifications.Add(s));
+            foreach (var spec in specs1)
+            {
+                await unitOfWork.ServerSpecifications.AddAsync(spec);
+            }
 
-            context.SaveChanges();
+            foreach (var spec in specs2)
+            {
+                await unitOfWork.ServerSpecifications.AddAsync(spec);
+            }
+
+            await unitOfWork.CompleteAsync();
         }
     }
 }

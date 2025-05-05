@@ -1,12 +1,16 @@
 ﻿<!-- Views/Shared/_Layout.cshtml -->
+@using servercraft.Resources
+@{
+    ViewBag.Title = "ServerCraft";
+}
+
 <!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@ViewBag.Title - ServerCraft</title>
-    <link href="~/Content/bootstrap.css" rel="stylesheet" />
-    <link href="~/Content/css/site.css" rel="stylesheet" />
+    <title>@ViewBag.Title - @SharedResource.AppName</title>
+    @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
 </head>
 <body>
@@ -18,47 +22,30 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a href="@Url.Action("Index", "Home")" class="navbar-brand">
-                    <span class="brand-primary">Server</span>Craft
-                </a>
+                @Html.ActionLink(SharedResource.AppName, "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    <li>@Html.ActionLink("Home", "Index", "Home")</li>
-                    <li>@Html.ActionLink("Products", "Index", "Product")</li>
-                    <li>@Html.ActionLink("Solutions", "Index", "Home", new { area = "" }, new { @class = "nav-link" })</li>
-                    <li>@Html.ActionLink("Support", "Index", "Home", new { area = "" }, new { @class = "nav-link" })</li>
+                    <li>@Html.ActionLink(SharedResource.Home, "Index", "Home")</li>
+                    <li>@Html.ActionLink(SharedResource.About, "About", "Home")</li>
+                    <li>@Html.ActionLink(SharedResource.Contact, "Contact", "Home")</li>
+                    <li>@Html.ActionLink(SharedResource.Servers, "Index", "Product")</li>
+                    <li>@Html.ActionLink(SharedResource.Cart, "Index", "Cart")</li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
-                    <li>
-                        <a href="@Url.Action("Index", "Cart")">
-                            Cart (<span id="cart-count">@(Session["CartCount"] ?? 0)</span>)
-                        </a>
-                    </li>
-                    <li>@Html.ActionLink("Login", "Login", "Account")</li>
+                    @Html.Partial("_LanguageSelector")
+                    @Html.Partial("_LoginPartial")
                 </ul>
             </div>
         </div>
     </div>
-
-    @RenderBody()
-
-    <footer class="footer">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-6">
-                    <p>&copy; @DateTime.Now.Year - ServerCraft. All rights reserved.</p>
-                </div>
-                <div class="col-md-6 text-right">
-                    <ul class="list-inline">
-                        <li>@Html.ActionLink("Terms", "Terms", "Home")</li>
-                        <li>@Html.ActionLink("Privacy", "Privacy", "Home")</li>
-                        <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </footer>
+    <div class="container body-content">
+        @RenderBody()
+        <hr />
+        <footer>
+            <p>&copy; @DateTime.Now.Year - @SharedResource.AppName</p>
+        </footer>
+    </div>
 
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")

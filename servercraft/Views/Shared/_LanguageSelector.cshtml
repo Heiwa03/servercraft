@@ -1,0 +1,50 @@
+@using System.Threading
+@using System.Globalization
+
+@{
+    var currentCulture = Thread.CurrentThread.CurrentUICulture.Name.ToLowerInvariant();
+}
+
+<ul class="nav navbar-nav navbar-right language-selector">
+    <li class="dropdown">
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+            @switch (currentCulture)
+            {
+                case "en":
+                    <img src="~/Content/images/flags/gb.png" alt="English" />
+                    break;
+                case "ro":
+                    <img src="~/Content/images/flags/ro.png" alt="Romanian" />
+                    break;
+                case "ru":
+                    <img src="~/Content/images/flags/ru.png" alt="Russian" />
+                    break;
+            }
+            <span class="caret"></span>
+        </a>
+        <ul class="dropdown-menu">
+            <li>
+                <a href="@Url.Action("Change", "Language", new { culture = "en" })">English</a>
+                <img src="~/Content/images/flags/gb.png" alt="English" />
+            </li>
+            <li>
+                <a href="@Url.Action("Change", "Language", new { culture = "ro" })">Română</a>
+                <img src="~/Content/images/flags/ro.png" alt="Romanian" />
+            </li>
+            <li>
+                <a href="@Url.Action("Change", "Language", new { culture = "ru" })">Русский</a>
+                <img src="~/Content/images/flags/ru.png" alt="Russian" />
+            </li>
+        </ul>
+    </li>
+</ul>
+
+<style>
+    .language-link {
+        display: inline-block !important;
+        padding: 3px 20px !important;
+    }
+    .dropdown-menu > li {
+        padding: 5px 0;
+    }
+</style> 
