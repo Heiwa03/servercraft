@@ -11,18 +11,14 @@ namespace servercraft.Models.Domain
         public int Id { get; set; }
 
         [Required]
-        [StringLength(50)]
-        [Index(IsUnique = true)]
+        [MaxLength(100)]
         public string Username { get; set; }
 
         [Required]
-        [StringLength(100)]
         public string PasswordHash { get; set; }
 
         [Required]
-        [StringLength(100)]
-        [EmailAddress]
-        [Index(IsUnique = true)]
+        [MaxLength(256)]
         public string Email { get; set; }
 
         [StringLength(50)]
