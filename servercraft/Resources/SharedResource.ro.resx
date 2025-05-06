@@ -118,4 +118,43 @@
   <data name="Cart" xml:space="preserve">
     <value>Coș</value>
   </data>
+  <data name="ServersDeployed" xml:space="preserve">
+    <value>Servere Implementate</value>
+  </data>
+  <data name="SatisfiedClients" xml:space="preserve">
+    <value>Clienți Mulțumiți</value>
+  </data>
+  <data name="CountriesServed" xml:space="preserve">
+    <value>Țări Servite</value>
+  </data>
+  <data name="Support" xml:space="preserve">
+    <value>Suport</value>
+  </data>
+  <data name="All" xml:space="preserve">
+    <value>Toate</value>
+  </data>
+  <data name="Enterprise" xml:space="preserve">
+    <value>Enterprise</value>
+  </data>
+  <data name="Cloud" xml:space="preserve">
+    <value>Cloud</value>
+  </data>
+  <data name="Storage" xml:space="preserve">
+    <value>Stocare</value>
+  </data>
+  <data name="QuickView" xml:space="preserve">
+    <value>Vizualizare Rapidă</value>
+  </data>
+  <data name="AddToCart" xml:space="preserve">
+    <value>Adaugă în Coș</value>
+  </data>
+  <data name="WhatOurClientsSay" xml:space="preserve">
+    <value>Ce Spun Clienții Noștri</value>
+  </data>
+  <data name="Testimonial1" xml:space="preserve">
+    <value>ServerCraft ne-a oferit soluția perfectă de server pentru afacerea noastră în creștere. Echipa lor de suport este excepțională!</value>
+  </data>
+  <data name="ServerDetails" xml:space="preserve">
+    <value>Detalii Server</value>
+  </data>
 </root> 

@@ -4,69 +4,514 @@
     ViewBag.Title = SharedResource.Home;
 }
 
-<div class="jumbotron">
-    <div class="container text-center">
-        <h1>@SharedResource.EnterpriseServerSolutions</h1>
-        <p class="lead">@SharedResource.EnterpriseServerSolutionsMessage</p>
+<!-- Hero Section -->
+<div class="hero-section">
+    <div class="container hero-container text-center d-flex flex-column justify-content-center align-items-center" style="min-height: 30vh;">
+        <div class="hero-logo-title" style="display: flex; align-items: center; justify-content: center; gap: 18px; margin-bottom: 10px;">
+            <img src="/Content/images/servercraft-logo.svg" alt="ServerCraft Logo" style="height: 48px; width: 48px;" />
+            <h1 class="hero-title" style="margin-bottom: 0;">Enterprise Server Solutions</h1>
+        </div>
+        <p class="lead">High-performance servers and IT infrastructure for your business needs</p>
+    </div>
+</div>
+
+<!-- Quick Stats Section -->
+<div class="stats-section">
+    <div class="container">
         <div class="row">
-            <div class="col-md-6 col-md-offset-3">
-                <form class="form-inline">
-                    <div class="form-group" style="width: 70%;">
-                        <input type="text" class="form-control" style="width: 100%;" placeholder="@SharedResource.SearchForServers">
-                    </div>
-                    <button type="submit" class="btn btn-primary">@SharedResource.Search</button>
-                </form>
+            <div class="col-md-3">
+                <div class="stat-card">
+                    <i class="fas fa-server"></i>
+                    <h3 class="counter" data-suffix="+">1000</h3>
+                    <p>@SharedResource.ServersDeployed</p>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="stat-card">
+                    <i class="fas fa-users"></i>
+                    <h3 class="counter" data-suffix="+">500</h3>
+                    <p>@SharedResource.SatisfiedClients</p>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="stat-card">
+                    <i class="fas fa-globe"></i>
+                    <h3 class="counter" data-suffix="+">50</h3>
+                    <p>@SharedResource.CountriesServed</p>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="stat-card">
+                    <i class="fas fa-clock"></i>
+                    <h3 style="color:#1a237e; font-size:2.5rem; font-weight:700;">24/7</h3>
+                    <p>@SharedResource.Support</p>
+                </div>
             </div>
         </div>
     </div>
 </div>
 
-<div class="container">
-    <div class="row">
-        <div class="col-md-3">
-            @Html.Partial("_SearchFilter")
-        </div>
-        <div class="col-md-9">
+<!-- Server Showcase Section -->
+<div class="server-showcase">
+    <div class="container">
+        <div class="section-header">
             <h2>@SharedResource.FeaturedServers</h2>
-            <div class="row">
-                @foreach (var server in Model)
-                {
-                    <div class="col-md-4">
-                        @Html.Partial("_ServerCard", server)
+            <div class="filter-buttons">
+                <button class="btn btn-filter active" data-filter="all">@SharedResource.All</button>
+                <button class="btn btn-filter" data-filter="enterprise">@SharedResource.Enterprise</button>
+                <button class="btn btn-filter" data-filter="cloud">@SharedResource.Cloud</button>
+                <button class="btn btn-filter" data-filter="storage">@SharedResource.Storage</button>
+            </div>
+        </div>
+        
+        <div class="row server-grid">
+            @foreach (var server in Model)
+            {
+                <div class="col-md-4 server-item" data-category="@server.Category.ToLower()">
+                    <div class="server-card">
+                        <div class="server-image">
+                            <img src="@server.ImageUrl" alt="@server.Name">
+                            @if (!string.IsNullOrEmpty(server.Badge))
+                            {
+                                <div class="server-badge">@server.Badge</div>
+                            }
+                            <div class="server-overlay">
+                                <button class="btn btn-primary quick-view" data-server-id="@server.Id">
+                                    <i class="fas fa-eye"></i> @SharedResource.QuickView
+                                </button>
+                            </div>
+                        </div>
+                        <div class="server-details">
+                            <h3>@server.Name</h3>
+                            <p class="server-description">@server.Description</p>
+                            <div class="server-specs">
+                                <span><i class="fas fa-microchip"></i> @server.Processor</span>
+                                <span><i class="fas fa-memory"></i> @server.Memory</span>
+                                <span><i class="fas fa-hdd"></i> @server.Storage</span>
+                            </div>
+                            <div class="server-price">
+                                @if (server.OldPrice.HasValue)
+                                {
+                                    <span class="old-price">@server.OldPrice.Value.ToString("C")</span>
+                                }
+                                <span class="price">@server.Price.ToString("C")</span>
+                                <button class="btn btn-success add-to-cart" data-server-id="@server.Id">
+                                    <i class="fas fa-shopping-cart"></i> @SharedResource.AddToCart
+                                </button>
+                            </div>
+                        </div>
                     </div>
-                }
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+<!-- Features Section -->
+<div class="features-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4">
+                <div class="feature-card">
+                    <i class="fas fa-headset"></i>
+                    <h3>@SharedResource.EnterpriseSupport</h3>
+                    <p>@SharedResource.EnterpriseSupportMessage</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="feature-card">
+                    <i class="fas fa-cogs"></i>
+                    <h3>@SharedResource.CustomSolutions</h3>
+                    <p>@SharedResource.CustomSolutionsMessage</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="feature-card">
+                    <i class="fas fa-shield-alt"></i>
+                    <h3>@SharedResource.WarrantyAndService</h3>
+                    <p>@SharedResource.WarrantyAndServiceMessage</p>
+                </div>
             </div>
         </div>
     </div>
 </div>
 
-<div class="container-fluid bg-light-gray">
-    <div class="container padding-vertical">
-        <div class="row">
-            <div class="col-md-4">
-                <div class="panel panel-default">
-                    <div class="panel-body">
-                        <h3>@SharedResource.EnterpriseSupport</h3>
-                        <p>@SharedResource.EnterpriseSupportMessage</p>
+<!-- Testimonials Section -->
+<div class="testimonials-section">
+    <div class="container">
+        <h2>@SharedResource.WhatOurClientsSay</h2>
+        <div class="testimonials-carousel">
+            <div class="testimonial-item">
+                <div class="testimonial-content">
+                    <p>"@SharedResource.Testimonial1"</p>
+                    <div class="testimonial-author">
+                        <img src="~/Content/images/client1.jpg" alt="Client">
+                        <div>
+                            <h4>John Doe</h4>
+                            <p>CTO, TechCorp</p>
+                        </div>
                     </div>
                 </div>
             </div>
-            <div class="col-md-4">
-                <div class="panel panel-default">
-                    <div class="panel-body">
-                        <h3>@SharedResource.CustomSolutions</h3>
-                        <p>@SharedResource.CustomSolutionsMessage</p>
-                    </div>
-                </div>
+            <!-- Add more testimonial items here -->
+        </div>
+    </div>
+</div>
+
+<!-- Quick View Modal -->
+<div class="modal fade" id="quickViewModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">@SharedResource.ServerDetails</h5>
+                <button type="button" class="close" data-dismiss="modal">
+                    <span>&times;</span>
+                </button>
             </div>
-            <div class="col-md-4">
-                <div class="panel panel-default">
-                    <div class="panel-body">
-                        <h3>@SharedResource.WarrantyAndService</h3>
-                        <p>@SharedResource.WarrantyAndServiceMessage</p>
-                    </div>
-                </div>
+            <div class="modal-body">
+                <!-- Server details will be loaded here dynamically -->
             </div>
         </div>
     </div>
 </div>
+
+@section Styles {
+    <style>
+        .hero-section {
+            background: linear-gradient(135deg, #1a237e 0%, #0d47a1 100%);
+            color: white;
+            padding: 100px 0;
+            margin-bottom: 50px;
+        }
+
+        .hero-content h1 {
+            font-size: 3rem;
+            margin-bottom: 20px;
+        }
+
+        .hero-content .lead {
+            font-size: 1.25rem;
+            margin-bottom: 30px;
+        }
+
+        .search-container {
+            max-width: 500px;
+        }
+
+        .search-form .input-group {
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .stats-section {
+            padding: 50px 0;
+            background-color: #f8f9fa;
+        }
+
+        .stat-card {
+            text-align: center;
+            padding: 30px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .stat-card i {
+            font-size: 2.5rem;
+            color: #1a237e;
+            margin-bottom: 15px;
+        }
+
+        .server-showcase {
+            padding: 50px 0;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .filter-buttons {
+            margin-top: 20px;
+        }
+
+        .btn-filter {
+            margin: 0 5px;
+            padding: 8px 20px;
+            border-radius: 20px;
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            transition: all 0.3s;
+        }
+
+        .btn-filter.active {
+            background: #1a237e;
+            color: white;
+            border-color: #1a237e;
+        }
+
+        .server-card {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+            transition: transform 0.3s;
+        }
+
+        .server-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .server-image {
+            position: relative;
+            height: 200px;
+            overflow: hidden;
+        }
+
+        .server-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .server-badge {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: #1a237e;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-size: 0.8rem;
+        }
+
+        .server-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .server-card:hover .server-overlay {
+            opacity: 1;
+        }
+
+        .server-details {
+            padding: 20px;
+        }
+
+        .server-details h3 {
+            font-size: 1.25rem;
+            margin-bottom: 10px;
+        }
+
+        .server-description {
+            color: #6c757d;
+            margin-bottom: 15px;
+        }
+
+        .server-specs {
+            margin-bottom: 15px;
+        }
+
+        .server-specs span {
+            display: block;
+            margin-bottom: 5px;
+            color: #495057;
+        }
+
+        .server-specs i {
+            color: #1a237e;
+            margin-right: 5px;
+        }
+
+        .server-price {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .old-price {
+            text-decoration: line-through;
+            color: #6c757d;
+            margin-right: 10px;
+        }
+
+        .price {
+            font-size: 1.25rem;
+            font-weight: bold;
+            color: #1a237e;
+        }
+
+        .features-section {
+            padding: 50px 0;
+            background-color: #f8f9fa;
+        }
+
+        .feature-card {
+            text-align: center;
+            padding: 30px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .feature-card i {
+            font-size: 2.5rem;
+            color: #1a237e;
+            margin-bottom: 15px;
+        }
+
+        .testimonials-section {
+            padding: 50px 0;
+        }
+
+        .testimonial-item {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin: 20px;
+        }
+
+        .testimonial-author {
+            display: flex;
+            align-items: center;
+            margin-top: 20px;
+        }
+
+        .testimonial-author img {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            margin-right: 15px;
+        }
+
+        @@media (max-width: 768px) {
+            .hero-section {
+                padding: 50px 0;
+            }
+
+            .hero-content h1 {
+                font-size: 2rem;
+            }
+
+            .stat-card {
+                margin-bottom: 20px;
+            }
+
+            .server-card {
+                margin-bottom: 20px;
+            }
+        }
+    </style>
+}
+
+@section Scripts {
+    <script>
+        $(document).ready(function() {
+            // Initialize counter animation
+            $('.counter').each(function() {
+                var $this = $(this);
+                var suffix = $this.data('suffix') || '';
+                var countTo = parseInt($this.text(), 10);
+                if (isNaN(countTo)) {
+                    $this.text($this.text()); // fallback: just show the text
+                    return;
+                }
+                $this.prop('Counter', 0).animate({
+                    Counter: countTo
+                }, {
+                    duration: 2000,
+                    easing: 'swing',
+                    step: function(now) {
+                        $this.text(Math.ceil(now) + suffix);
+                    }
+                });
+            });
+
+            // Server filtering
+            $('.btn-filter').click(function() {
+                $('.btn-filter').removeClass('active');
+                $(this).addClass('active');
+                
+                var filter = $(this).data('filter');
+                if (filter === 'all') {
+                    $('.server-item').show();
+                } else {
+                    $('.server-item').hide();
+                    $('.server-item[data-category="' + filter + '"]').show();
+                }
+            });
+
+            // Quick view functionality
+            $('.quick-view').click(function() {
+                var serverId = $(this).data('server-id');
+                var modal = $('#quickViewModal');
+                
+                // Show loading state
+                modal.find('.modal-body').html('<div class="text-center"><i class="fas fa-spinner fa-spin fa-3x"></i></div>');
+                modal.modal('show');
+
+                // Load server details
+                $.get('@Url.Action("QuickView", "Home")', { id: serverId })
+                    .done(function(response) {
+                        modal.find('.modal-body').html(response);
+                    })
+                    .fail(function() {
+                        modal.find('.modal-body').html('<div class="alert alert-danger">Error loading server details. Please try again.</div>');
+                    });
+            });
+
+            // Add to cart functionality
+            $('.add-to-cart').click(function(e) {
+                e.preventDefault();
+                var serverId = $(this).data('server-id');
+                var $btn = $(this);
+                $btn.prop('disabled', true);
+                $.ajax({
+                    url: '@Url.Action("AddToCart", "Cart")',
+                    type: 'POST',
+                    data: { id: serverId },
+                    success: function(response) {
+                        $btn.prop('disabled', false);
+                        if (response.success) {
+                            // Update cart count in navbar if you have a badge or element for it
+                            if ($('#cart-count').length) {
+                                $('#cart-count').text(response.cartCount);
+                            }
+                            // Show a notification
+                            if ($('#cart-toast').length === 0) {
+                                $('body').append('<div id="cart-toast" style="position:fixed;top:30px;right:30px;z-index:9999;display:none;"></div>');
+                            }
+                            $('#cart-toast').html('<div class="alert alert-success">Product added to cart!</div>').fadeIn(200).delay(1200).fadeOut(400);
+                        } else {
+                            alert('Could not add to cart.');
+                        }
+                    },
+                    error: function() {
+                        $btn.prop('disabled', false);
+                        alert('Could not add to cart.');
+                    }
+                });
+            });
+        });
+    </script>
+}

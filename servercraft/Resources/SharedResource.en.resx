@@ -118,4 +118,43 @@
   <data name="Cart" xml:space="preserve">
     <value>Cart</value>
   </data>
+  <data name="ServersDeployed" xml:space="preserve">
+    <value>Servers Deployed</value>
+  </data>
+  <data name="SatisfiedClients" xml:space="preserve">
+    <value>Satisfied Clients</value>
+  </data>
+  <data name="CountriesServed" xml:space="preserve">
+    <value>Countries Served</value>
+  </data>
+  <data name="Support" xml:space="preserve">
+    <value>Support</value>
+  </data>
+  <data name="All" xml:space="preserve">
+    <value>All</value>
+  </data>
+  <data name="Enterprise" xml:space="preserve">
+    <value>Enterprise</value>
+  </data>
+  <data name="Cloud" xml:space="preserve">
+    <value>Cloud</value>
+  </data>
+  <data name="Storage" xml:space="preserve">
+    <value>Storage</value>
+  </data>
+  <data name="QuickView" xml:space="preserve">
+    <value>Quick View</value>
+  </data>
+  <data name="AddToCart" xml:space="preserve">
+    <value>Add to Cart</value>
+  </data>
+  <data name="WhatOurClientsSay" xml:space="preserve">
+    <value>What Our Clients Say</value>
+  </data>
+  <data name="Testimonial1" xml:space="preserve">
+    <value>ServerCraft provided us with the perfect server solution for our growing business. Their support team is exceptional!</value>
+  </data>
+  <data name="ServerDetails" xml:space="preserve">
+    <value>Server Details</value>
+  </data>
 </root> 

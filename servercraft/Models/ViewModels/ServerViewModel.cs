@@ -16,6 +16,10 @@ namespace servercraft.Models.ViewModels
         public bool InStock { get; set; }
         public List<string> Specs { get; set; }
         public ServerFullSpecsViewModel FullSpecs { get; set; }
+        public string Category { get; set; }
+        public string Processor { get; set; }
+        public string Memory { get; set; }
+        public string Storage { get; set; }
 
         public ServerViewModel()
         {
@@ -33,7 +37,8 @@ namespace servercraft.Models.ViewModels
                 OldPrice = server.OldPrice,
                 ImageUrl = server.ImageUrl,
                 Badge = server.Badge,
-                InStock = server.InStock
+                InStock = server.InStock,
+                Category = server.Category
             };
 
             foreach (var spec in server.Specifications)
@@ -52,6 +57,11 @@ namespace servercraft.Models.ViewModels
                     Power = server.FullSpecs.Power,
                     FormFactor = server.FullSpecs.FormFactor
                 };
+
+                // Set the direct properties for easier access in the view
+                viewModel.Processor = server.FullSpecs.Processor;
+                viewModel.Memory = server.FullSpecs.Memory;
+                viewModel.Storage = server.FullSpecs.Storage;
             }
 
             return viewModel;

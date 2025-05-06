@@ -13,12 +13,23 @@ namespace servercraft.Controllers
         public ActionResult Index()
         {
             var featuredServers = db.Servers
-                .Take(6)
                 .ToList()
                 .Select(ServerViewModel.FromDomain)
                 .ToList();
 
             return View(featuredServers);
+        }
+
+        public ActionResult QuickView(string id)
+        {
+            var server = db.Servers.Find(id);
+            if (server == null)
+            {
+                return HttpNotFound();
+            }
+
+            var viewModel = ServerViewModel.FromDomain(server);
+            return PartialView("_QuickView", viewModel);
         }
 
         public ActionResult About()

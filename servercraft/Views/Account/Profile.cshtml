@@ -4,6 +4,13 @@
     ViewBag.Title = "My Profile";
 }
 
+@if (TempData["Success"] != null)
+{
+    <div class="alert alert-success" style="max-width:400px;margin:30px auto 0 auto;text-align:center;">
+        @TempData["Success"]
+    </div>
+}
+
 <div class="profile-container" id="profileContainer">
     <div id="changePasswordColumn" class="change-password-fullscreen" style="display:none;">
         <div class="change-password-content">

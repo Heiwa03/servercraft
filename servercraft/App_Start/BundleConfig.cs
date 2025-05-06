@@ -28,7 +28,8 @@ namespace servercraft
                       "~/Content/bootstrap.css",
                       "~/Content/site.css",
                       "~/Content/about.css",
-                      "~/Content/language-selector.css"));
+                      "~/Content/language-selector.css",
+                      "~/Content/css/home.css"));
         }
     }
 }

@@ -118,4 +118,43 @@
   <data name="Cart" xml:space="preserve">
     <value>Корзина</value>
   </data>
+  <data name="ServersDeployed" xml:space="preserve">
+    <value>Развернуто Серверов</value>
+  </data>
+  <data name="SatisfiedClients" xml:space="preserve">
+    <value>Довольных Клиентов</value>
+  </data>
+  <data name="CountriesServed" xml:space="preserve">
+    <value>Обслуживаемых Стран</value>
+  </data>
+  <data name="Support" xml:space="preserve">
+    <value>Поддержка</value>
+  </data>
+  <data name="All" xml:space="preserve">
+    <value>Все</value>
+  </data>
+  <data name="Enterprise" xml:space="preserve">
+    <value>Корпоративные</value>
+  </data>
+  <data name="Cloud" xml:space="preserve">
+    <value>Облачные</value>
+  </data>
+  <data name="Storage" xml:space="preserve">
+    <value>Хранилище</value>
+  </data>
+  <data name="QuickView" xml:space="preserve">
+    <value>Быстрый Просмотр</value>
+  </data>
+  <data name="AddToCart" xml:space="preserve">
+    <value>Добавить в Корзину</value>
+  </data>
+  <data name="WhatOurClientsSay" xml:space="preserve">
+    <value>Что Говорят Наши Клиенты</value>
+  </data>
+  <data name="Testimonial1" xml:space="preserve">
+    <value>ServerCraft предоставил нам идеальное серверное решение для нашего растущего бизнеса. Их команда поддержки исключительна!</value>
+  </data>
+  <data name="ServerDetails" xml:space="preserve">
+    <value>Детали Сервера</value>
+  </data>
 </root> 

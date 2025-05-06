@@ -29,5 +29,20 @@ namespace servercraft.Resources
         public static string CustomSolutionsMessage => resourceManager.GetString("CustomSolutionsMessage");
         public static string WarrantyAndService => resourceManager.GetString("WarrantyAndService");
         public static string WarrantyAndServiceMessage => resourceManager.GetString("WarrantyAndServiceMessage");
+        
+        // New resource strings
+        public static string ServersDeployed => resourceManager.GetString("ServersDeployed");
+        public static string SatisfiedClients => resourceManager.GetString("SatisfiedClients");
+        public static string CountriesServed => resourceManager.GetString("CountriesServed");
+        public static string Support => resourceManager.GetString("Support");
+        public static string All => resourceManager.GetString("All");
+        public static string Enterprise => resourceManager.GetString("Enterprise");
+        public static string Cloud => resourceManager.GetString("Cloud");
+        public static string Storage => resourceManager.GetString("Storage");
+        public static string QuickView => resourceManager.GetString("QuickView");
+        public static string AddToCart => resourceManager.GetString("AddToCart");
+        public static string WhatOurClientsSay => resourceManager.GetString("WhatOurClientsSay");
+        public static string Testimonial1 => resourceManager.GetString("Testimonial1");
+        public static string ServerDetails => resourceManager.GetString("ServerDetails");
     }
 } 

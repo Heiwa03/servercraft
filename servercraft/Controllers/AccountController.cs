@@ -130,7 +130,8 @@ namespace servercraft.Controllers
                 var success = await _authService.ChangePasswordAsync(user.Id, model.OldPassword, model.NewPassword);
                 if (success)
                 {
-                    return RedirectToAction("Index", "Home");
+                    TempData["Success"] = "Password changed successfully!";
+                    return RedirectToAction("Profile", "Account");
                 }
 
                 ModelState.AddModelError("", "Current password is incorrect.");

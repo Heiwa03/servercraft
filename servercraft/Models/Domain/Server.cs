@@ -32,6 +32,10 @@ namespace servercraft.Models.Domain
 
         public bool InStock { get; set; }
 
+        [Required]
+        [StringLength(50)]
+        public string Category { get; set; }
+
         public virtual ICollection<ServerSpecification> Specifications { get; set; }
 
         public virtual ServerFullSpecs FullSpecs { get; set; }

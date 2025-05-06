@@ -33,6 +33,26 @@ namespace servercraft.Models.Domain
 
         public DateTime? LastLoginAt { get; set; }
 
+        [StringLength(20)]
+        public string PhoneNumber { get; set; }
+
+        public DateTime? DateOfBirth { get; set; }
+
+        [StringLength(256)]
+        public string ProfilePictureUrl { get; set; }
+
+        [StringLength(100)]
+        public string AddressStreet { get; set; }
+
+        [StringLength(50)]
+        public string AddressCity { get; set; }
+
+        [StringLength(50)]
+        public string AddressCountry { get; set; }
+
+        [StringLength(20)]
+        public string AddressPostalCode { get; set; }
+
         public virtual ICollection<UserRole> UserRoles { get; set; }
 
         public User()
