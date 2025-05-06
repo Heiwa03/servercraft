@@ -7,6 +7,7 @@ using servercraft.Models.Domain;
 using servercraft.Models.Repositories;
 using servercraft.Models.ViewModels;
 using servercraft.Services;
+using System.Linq;
 
 namespace servercraft.Controllers
 {
@@ -44,7 +45,7 @@ namespace servercraft.Controllers
                 if (user != null)
                 {
                     FormsAuthentication.SetAuthCookie(user.Username, model.RememberMe);
-                    return RedirectToLocal(returnUrl);
+                    return RedirectToAction("Profile", "Account");
                 }
 
                 ModelState.AddModelError("", "Invalid username or password.");
@@ -140,6 +141,19 @@ namespace servercraft.Controllers
                 ModelState.AddModelError("", "An error occurred while changing your password.");
                 return View(model);
             }
+        }
+
+        [Authorize]
+        public async Task<ActionResult> Profile()
+        {
+            var userId = User.Identity.Name;
+            var users = await _unitOfWork.Users.FindAsync(u => u.Username == userId);
+            var user = users.FirstOrDefault();
+            if (user == null)
+            {
+                return HttpNotFound();
+            }
+            return View(user);
         }
 
         private ActionResult RedirectToLocal(string returnUrl)

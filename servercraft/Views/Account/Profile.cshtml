@@ -1,0 +1,130 @@
+@model servercraft.Models.Domain.User
+
+@{
+    ViewBag.Title = "My Profile";
+}
+
+<div class="profile-container" id="profileContainer">
+    <div id="changePasswordColumn" class="change-password-fullscreen" style="display:none;">
+        <div class="change-password-content">
+            @Html.Action("ChangePassword", "Account")
+        </div>
+        <button class="btn btn-secondary back-to-profile-btn" type="button" id="backToProfileBtn">Back to Profile</button>
+    </div>
+    <div id="profileCard" class="profile-card">
+        <img class="profile-avatar" src="https://ui-avatars.com/api/?name=@Model.FirstName+@Model.LastName&background=0D8ABC&color=fff&size=128" alt="Avatar" />
+        <h2 class="profile-title">@Model.FirstName @Model.LastName</h2>
+        <div class="profile-info">
+            <p><strong>Email:</strong> @Model.Email</p>
+        </div>
+        <button class="btn btn-primary" type="button" id="showChangePasswordBtn" style="margin-bottom: 10px;">
+            Change Password
+        </button>
+    </div>
+</div>
+
+<style>
+.profile-container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    margin-top: 40px;
+    gap: 40px;
+    flex-wrap: wrap;
+}
+.profile-card {
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+    padding: 40px 32px 32px 32px;
+    max-width: 400px;
+    width: 100%;
+    text-align: center;
+    position: relative;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.profile-avatar {
+    width: 128px;
+    height: 128px;
+    border-radius: 50%;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.10);
+}
+.profile-title {
+    font-size: 2em;
+    margin-bottom: 10px;
+    font-weight: bold;
+}
+.profile-info {
+    margin-bottom: 30px;
+    font-size: 1.1em;
+}
+.change-password-fullscreen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: #fff;
+    z-index: 9999;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+    padding: 40px 0 40px 0;
+}
+.change-password-content {
+    flex: 1 0 auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+.change-password-fullscreen form {
+    max-width: 340px;
+    width: 100%;
+}
+.back-to-profile-btn {
+    margin-top: 32px;
+    background: #eee;
+    color: #333;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 24px;
+    font-size: 1em;
+    transition: background 0.2s;
+    align-self: center;
+}
+.back-to-profile-btn:hover {
+    background: #ccc;
+}
+@@media (max-width: 900px) {
+    .change-password-fullscreen form {
+        max-width: 95vw;
+    }
+}
+</style>
+
+@section scripts {
+    <script>
+        $(function () {
+            // Always reset state on page load
+            $('#changePasswordColumn').hide();
+            $('#profileCard').show();
+
+            $('#showChangePasswordBtn').click(function () {
+                $('#changePasswordColumn').css('display', 'flex');
+                $('#profileCard').hide();
+            });
+            $('#backToProfileBtn').click(function () {
+                $('#changePasswordColumn').hide();
+                $('#profileCard').show();
+            });
+        });
+    </script>
+} 
