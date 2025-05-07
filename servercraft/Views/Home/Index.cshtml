@@ -67,7 +67,7 @@
         <div class="row server-grid">
             @foreach (var server in Model)
             {
-                <div class="col-md-4 server-item" data-category="@server.Category.ToLower()">
+                <div class="server-item" data-category="@server.Category.ToLower()">
                     <div class="server-card">
                         <div class="server-image">
                             <img src="@server.ImageUrl" alt="@server.Name">
@@ -254,17 +254,34 @@
             border-color: #1a237e;
         }
 
-        .server-card {
-            background: white;
-            border-radius: 10px;
-            overflow: hidden;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            margin-bottom: 30px;
-            transition: transform 0.3s;
+        .server-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 24px 0;
         }
-
-        .server-card:hover {
-            transform: translateY(-5px);
+        .server-item {
+            display: flex;
+            flex: 1 1 0;
+            min-width: 320px;
+            max-width: 33.3333%;
+            box-sizing: border-box;
+            padding: 12px;
+        }
+        @@media (max-width: 991px) {
+            .server-item {
+                max-width: 50%;
+            }
+        }
+        @@media (max-width: 767px) {
+            .server-item {
+                max-width: 100%;
+            }
+        }
+        .server-card {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
         }
 
         .server-image {
@@ -310,6 +327,9 @@
 
         .server-details {
             padding: 20px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
         }
 
         .server-details h3 {
@@ -320,6 +340,13 @@
         .server-description {
             color: #6c757d;
             margin-bottom: 15px;
+            flex: 1;
+            height: 60px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
         }
 
         .server-specs {
@@ -341,6 +368,7 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
+            margin-top: auto;
         }
 
         .old-price {
