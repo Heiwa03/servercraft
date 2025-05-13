@@ -19,6 +19,9 @@ namespace servercraft
         {
             Database.SetInitializer(new ServerMarketInitializer());
 
+            // One-time full specs seeder
+            // servercraft.FullSpecsSeeder.Seed();
+
             AreaRegistration.RegisterAllAreas();
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
