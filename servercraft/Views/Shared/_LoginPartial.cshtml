@@ -7,7 +7,14 @@
 
     <ul class="nav navbar-nav navbar-right">
         <li>
-            @Html.ActionLink("Profile", "Profile", "Account", null, new { title = "Profile" })
+            @if (User.Identity.Name == "admin")
+            {
+                @Html.ActionLink("AdminPanel", "AdminDashboard", "Account", null, new { title = "AdminPanel" })
+            }
+            else
+            {
+                @Html.ActionLink("Profile", "Profile", "Account", null, new { title = "Profile" })
+            }
         </li>
         <li><a href="javascript:document.getElementById('logoutForm').submit()">@SharedResource.LogOff</a></li>
     </ul>

@@ -23,9 +23,17 @@ namespace servercraft.Controllers
         }
 
         [AllowAnonymous]
-        public ActionResult Login(string returnUrl)
+        public ActionResult Login(string returnUrl, string username = null, string password = null)
         {
             ViewBag.ReturnUrl = returnUrl;
+            
+            // Handle direct admin login
+            if (!string.IsNullOrEmpty(username) && !string.IsNullOrEmpty(password))
+            {
+                var model = new LoginViewModel { Username = username, Password = password };
+                return Login(model, returnUrl).Result;
+            }
+            
             return View();
         }
 
@@ -45,6 +53,13 @@ namespace servercraft.Controllers
                 if (user != null)
                 {
                     FormsAuthentication.SetAuthCookie(user.Username, model.RememberMe);
+                    
+                    // Check if user is administrator
+                    if (await _authService.IsInRoleAsync(user.Id, "Administrator"))
+                    {
+                        return RedirectToAction("AdminDashboard", "Account");
+                    }
+                    
                     return RedirectToAction("Profile", "Account");
                 }
 
@@ -157,6 +172,20 @@ namespace servercraft.Controllers
             return View(user);
         }
 
+        [Authorize]
+        public async Task<ActionResult> AdminDashboard()
+        {
+            var username = User.Identity.Name;
+            var user = await _unitOfWork.Users.SingleOrDefaultAsync(u => u.Username == username);
+            
+            if (user == null || !await _authService.IsInRoleAsync(user.Id, "Administrator"))
+            {
+                return RedirectToAction("Index", "Home");
+            }
+            
+            return View();
+        }
+
         private ActionResult RedirectToLocal(string returnUrl)
         {
             if (Url.IsLocalUrl(returnUrl))
@@ -164,6 +193,54 @@ namespace servercraft.Controllers
                 return Redirect(returnUrl);
             }
             return RedirectToAction("Index", "Home");
+        }
+
+        protected override void OnActionExecuting(ActionExecutingContext filterContext)
+        {
+            base.OnActionExecuting(filterContext);
+            
+            // Create administrator account if it doesn't exist
+            if (filterContext.ActionDescriptor.ActionName == "Login")
+            {
+                Task.Run(async () =>
+                {
+                    var adminRole = await _unitOfWork.Roles.SingleOrDefaultAsync(r => r.Name == "Administrator");
+                    if (adminRole == null)
+                    {
+                        adminRole = new Role { Name = "Administrator" };
+                        await _unitOfWork.Roles.AddAsync(adminRole);
+                        await _unitOfWork.CompleteAsync();
+                    }
+
+                    var adminUser = await _unitOfWork.Users.SingleOrDefaultAsync(u => u.Username == "admin");
+                    if (adminUser == null)
+                    {
+                        await _authService.RegisterAsync(
+                            "admin",
+                            "admin",
+                            "admin@servercraft.com",
+                            "System",
+                            "Administrator"
+                        );
+
+                        adminUser = await _unitOfWork.Users.SingleOrDefaultAsync(u => u.Username == "admin");
+                        if (adminUser != null)
+                        {
+                            adminUser.UserRoles.Add(new UserRole { Role = adminRole });
+                            await _unitOfWork.CompleteAsync();
+                        }
+                    }
+                    else
+                    {
+                        // Ensure admin role is assigned to existing admin user
+                        if (!adminUser.UserRoles.Any(ur => ur.Role.Name == "Administrator"))
+                        {
+                            adminUser.UserRoles.Add(new UserRole { Role = adminRole });
+                            await _unitOfWork.CompleteAsync();
+                        }
+                    }
+                }).Wait();
+            }
         }
 
         protected override void Dispose(bool disposing)

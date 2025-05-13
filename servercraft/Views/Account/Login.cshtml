@@ -8,7 +8,7 @@
     <div class="row">
         <div class="col-md-8">
             <section id="loginForm">
-                @using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+                @using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form", id = "loginForm" }))
                 {
                     @Html.AntiForgeryToken()
                     <h4>Use your account to log in.</h4>
@@ -47,9 +47,30 @@
                 }
             </section>
         </div>
+        <div class="col-md-4">
+            <section id="adminLogin">
+                <h4>Login as Administrator</h4>
+                <hr />
+                <div class="alert alert-info">
+                    <p>Default credentials:</p>
+                    <p>Username: admin</p>
+                    <p>Password: admin</p>
+                </div>
+                <p>
+                    <button type="button" class="btn btn-primary" onclick="loginAsAdmin()">Login as Administrator</button>
+                </p>
+            </section>
+        </div>
     </div>
 </div>
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
+    <script>
+        function loginAsAdmin() {
+            document.getElementById('Username').value = 'admin';
+            document.getElementById('Password').value = 'admin';
+            document.getElementById('loginForm').submit();
+        }
+    </script>
 } 

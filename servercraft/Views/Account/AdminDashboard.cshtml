@@ -1,0 +1,39 @@
+@{
+    ViewBag.Title = "Administrator Dashboard";
+}
+
+<div class="container" style="margin-top: 70px;">
+    <h2>@ViewBag.Title</h2>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="alert alert-success">
+                <h4>Welcome, Administrator!</h4>
+                <p>You have full access to manage the system.</p>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Product Management</h3>
+                </div>
+                <div class="panel-body">
+                    <p>Add and manage products in the database.</p>
+                    <a href="@Url.Action("Create", "Products")" class="btn btn-primary">Add New Product</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Server Specifications</h3>
+                </div>
+                <div class="panel-body">
+                    <p>Manage server specifications for products.</p>
+                    <a href="@Url.Action("Create", "ServerSpecifications")" class="btn btn-primary">Add Server Specifications</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div> 
