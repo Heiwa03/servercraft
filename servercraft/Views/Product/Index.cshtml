@@ -17,7 +17,9 @@
                             <h5 class="card-title">@server.Name</h5>
                             <p class="card-text">@server.Description</p>
                             <p class="card-text"><strong>Price:</strong> @server.Price.ToString("C")</p>
-                            <a href="@Url.Action("Details", "Product", new { id = server.Id })" class="btn btn-primary">View Details</a>
+                            <a href="#" class="btn btn-primary quick-view" data-server-id="@server.Id">
+                                <i class="fas fa-eye"></i> Quick View
+                            </a>
                         </div>
                     </div>
                 </div>
@@ -29,6 +31,47 @@
         <div class="alert alert-info">No products found.</div>
     }
 </div>
+
+<!-- Quick View Modal -->
+<div class="modal fade" id="quickViewModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Server Details</h5>
+                <button type="button" class="close" data-dismiss="modal">
+                    <span>&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <!-- Server details will be loaded here dynamically -->
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function() {
+            // Quick view functionality
+            $('.quick-view').click(function(e) {
+                e.preventDefault();
+                var serverId = $(this).data('server-id');
+                var modal = $('#quickViewModal');
+                // Show loading state
+                modal.find('.modal-body').html('<div class="text-center"><i class="fas fa-spinner fa-spin fa-3x"></i></div>');
+                modal.modal('show');
+                // Load server details
+                $.get('/Home/QuickView', { id: serverId })
+                    .done(function(response) {
+                        modal.find('.modal-body').html(response);
+                    })
+                    .fail(function() {
+                        modal.find('.modal-body').html('<div class="alert alert-danger">Error loading server details. Please try again.</div>');
+                    });
+            });
+        });
+    </script>
+}
 
 <style>
 .card {
