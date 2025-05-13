@@ -5,6 +5,7 @@ using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using System.Web.Mvc;
+using System.Collections.Generic;
 using servercraft.Models;
 using servercraft.Models.Repositories;
 using servercraft.Models.ViewModels;
@@ -69,6 +70,21 @@ namespace servercraft.Controllers
                 // Log the exception
                 return View("Error");
             }
+        }
+
+        // GET: /Product/Search
+        public async Task<ActionResult> Search(string query)
+        {
+            if (string.IsNullOrWhiteSpace(query))
+            {
+                return View("SearchResults", new List<ServerViewModel>());
+            }
+
+            query = query.Trim().ToLower();
+            var servers = await _unitOfWork.Servers.FindAsync(s => s.Name.ToLower().IndexOf(query) >= 0);
+            var viewModels = servers.Select(ServerViewModel.FromDomain).ToList();
+            ViewBag.Query = query;
+            return View("SearchResults", viewModels);
         }
 
         protected override void Dispose(bool disposing)
