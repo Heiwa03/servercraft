@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using servercraft.Models;
 using servercraft.Models.Repositories;
 using servercraft.Models.ViewModels;
+using servercraft.Models.Domain;
 
 namespace servercraft.Controllers
 {
@@ -85,6 +86,32 @@ namespace servercraft.Controllers
             var viewModels = servers.Select(ServerViewModel.FromDomain).ToList();
             ViewBag.Query = query;
             return View("SearchResults", viewModels);
+        }
+
+        [Authorize]
+        public ActionResult Create()
+        {
+            // Only allow admin
+            if (User.Identity.Name != "admin")
+                return RedirectToAction("Index", "Home");
+            return View();
+        }
+
+        [HttpPost]
+        [Authorize]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> Create(Server model)
+        {
+            if (User.Identity.Name != "admin")
+                return RedirectToAction("Index", "Home");
+            if (ModelState.IsValid)
+            {
+                model.Id = Guid.NewGuid().ToString();
+                await _unitOfWork.Servers.AddAsync(model);
+                await _unitOfWork.CompleteAsync();
+                return RedirectToAction("Index");
+            }
+            return View(model);
         }
 
         protected override void Dispose(bool disposing)
