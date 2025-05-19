@@ -11,7 +11,7 @@ namespace servercraft.Controllers
 {
     public class CartController : Controller
     {
-        private ServerMarketContext db = new ServerMarketContext();
+        private readonly ServerMarketContext db = new ServerMarketContext();
 
         // GET: /Cart/
         public ActionResult Index()
@@ -43,6 +43,103 @@ namespace servercraft.Controllers
             viewModel.Total = viewModel.Subtotal + viewModel.Shipping + viewModel.Tax;
 
             return View(viewModel);
+        }
+
+        // GET: /Cart/Checkout
+        public ActionResult Checkout()
+        {
+            var cartId = GetCartId();
+            var cartItems = db.CartItems
+                .Include(c => c.Server)
+                .Where(c => c.CartId == cartId)
+                .ToList();
+
+            if (!cartItems.Any())
+            {
+                return RedirectToAction("Index");
+            }
+
+            var viewModel = new CheckoutViewModel();
+
+            foreach (var item in cartItems)
+            {
+                viewModel.Items.Add(new CartItemViewModel
+                {
+                    ServerId = item.ServerId,
+                    Name = item.Server.Name,
+                    ImageUrl = item.Server.ImageUrl,
+                    Price = item.Server.Price,
+                    Quantity = item.Quantity,
+                    Total = item.Server.Price * item.Quantity
+                });
+            }
+
+            viewModel.Subtotal = viewModel.Items.Sum(i => i.Total);
+            viewModel.Shipping = 250; // Fixed shipping cost
+            viewModel.Tax = Math.Round(viewModel.Subtotal * 0.08m, 2); // 8% tax
+            viewModel.Total = viewModel.Subtotal + viewModel.Shipping + viewModel.Tax;
+
+            return View(viewModel);
+        }
+
+        // POST: /Cart/ProcessPayment
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult ProcessPayment(CheckoutViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View("Checkout", model);
+            }
+
+            var cartId = GetCartId();
+            var cartItems = db.CartItems
+                .Include(c => c.Server)
+                .Where(c => c.CartId == cartId)
+                .ToList();
+
+            if (!cartItems.Any())
+            {
+                return RedirectToAction("Index");
+            }
+
+            // Process payment based on selected method
+            switch (model.PaymentMethod)
+            {
+                case PaymentMethod.BankAccount:
+                    // In a real application, you would integrate with a payment processor
+                    // For now, we'll just simulate a successful payment
+                    break;
+
+                case PaymentMethod.GooglePay:
+                    // Redirect to Google Pay
+                    return Redirect("https://pay.google.com/checkout");
+
+                case PaymentMethod.PayPal:
+                    // Redirect to PayPal
+                    return Redirect("https://www.paypal.com/checkout");
+
+                default:
+                    ModelState.AddModelError("", "Invalid payment method selected.");
+                    return View("Checkout", model);
+            }
+
+            // Clear the cart after successful payment
+            db.CartItems.RemoveRange(cartItems);
+            db.SaveChanges();
+
+            // Clear the cart ID from the session
+            Session.Remove("CartId");
+            Session.Remove("CartCount");
+
+            // Redirect to a success page
+            return RedirectToAction("PaymentSuccess");
+        }
+
+        // GET: /Cart/PaymentSuccess
+        public ActionResult PaymentSuccess()
+        {
+            return View();
         }
 
         // POST: /Cart/AddToCart
