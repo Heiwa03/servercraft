@@ -1,0 +1,59 @@
+@{
+    ViewBag.Title = "Payment Successful";
+}
+
+<div class="container padding-vertical">
+    <div class="row">
+        <div class="col-md-8 col-md-offset-2">
+            <div class="panel panel-success">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Payment Successful!</h3>
+                </div>
+                <div class="panel-body text-center">
+                    <i class="fas fa-check-circle text-success" style="font-size: 64px; margin-bottom: 20px;"></i>
+                    <h2>Thank You for Your Purchase</h2>
+                    <p class="lead">Your order has been successfully processed.</p>
+                    <p>We will send you an email confirmation with your order details.</p>
+                    <hr />
+                    <div class="row">
+                        <div class="col-md-6">
+                            <a href="@Url.Action("Index", "Home")" class="btn btn-default btn-block">
+                                <i class="fas fa-home"></i> Return to Home
+                            </a>
+                        </div>
+                        <div class="col-md-6">
+                            <a href="@Url.Action("Index", "Product")" class="btn btn-primary btn-block">
+                                <i class="fas fa-shopping-cart"></i> Continue Shopping
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.panel-success {
+    border-color: #d6e9c6;
+}
+
+.panel-success > .panel-heading {
+    background-color: #dff0d8;
+    border-color: #d6e9c6;
+    color: #3c763d;
+}
+
+.text-success {
+    color: #3c763d;
+}
+
+.panel-body {
+    padding: 30px;
+}
+
+.lead {
+    font-size: 18px;
+    margin-bottom: 20px;
+}
+</style> 
