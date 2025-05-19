@@ -223,6 +223,74 @@ namespace servercraft.Controllers
             return RedirectToAction("Index");
         }
 
+        // POST: /Cart/RemoveFromCart
+        [HttpPost]
+        public ActionResult RemoveFromCart(string id)
+        {
+            var cartId = GetCartId();
+            var cartItem = db.CartItems.FirstOrDefault(c => c.CartId == cartId && c.ServerId == id);
+            if (cartItem != null)
+            {
+                db.CartItems.Remove(cartItem);
+                db.SaveChanges();
+            }
+            // Recalculate totals
+            var cartItems = db.CartItems.Include(c => c.Server).Where(c => c.CartId == cartId).ToList();
+            var subtotal = cartItems.Sum(i => i.Server.Price * i.Quantity);
+            var shipping = 250m;
+            var tax = Math.Round(subtotal * 0.08m, 2);
+            var total = subtotal + shipping + tax;
+            var cartCount = cartItems.Sum(i => i.Quantity);
+            Session["CartCount"] = cartCount;
+            return Json(new {
+                success = true,
+                cartCount,
+                subtotal,
+                shipping,
+                tax,
+                total
+            });
+        }
+
+        // POST: /Cart/UpdateQuantityAjax
+        [HttpPost]
+        public ActionResult UpdateQuantityAjax(string id, int quantity)
+        {
+            var cartId = GetCartId();
+            var cartItem = db.CartItems.Include(c => c.Server).FirstOrDefault(c => c.CartId == cartId && c.ServerId == id);
+            if (cartItem == null)
+            {
+                return Json(new { success = false });
+            }
+            if (quantity > 0)
+            {
+                cartItem.Quantity = quantity;
+            }
+            else
+            {
+                db.CartItems.Remove(cartItem);
+            }
+            db.SaveChanges();
+            // Recalculate totals
+            var cartItems = db.CartItems.Include(c => c.Server).Where(c => c.CartId == cartId).ToList();
+            var subtotal = cartItems.Sum(i => i.Server.Price * i.Quantity);
+            var shipping = 250m;
+            var tax = Math.Round(subtotal * 0.08m, 2);
+            var total = subtotal + shipping + tax;
+            var cartCount = cartItems.Sum(i => i.Quantity);
+            Session["CartCount"] = cartCount;
+            var itemTotal = cartItem != null && quantity > 0 ? cartItem.Server.Price * cartItem.Quantity : 0;
+            return Json(new {
+                success = true,
+                cartCount,
+                subtotal,
+                shipping,
+                tax,
+                total,
+                itemTotal
+            });
+        }
+
         // Helper method to get or create cart ID
         private string GetCartId()
         {

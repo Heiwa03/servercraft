@@ -89,20 +89,20 @@
                 <div class="panel-body">
                     <div class="row">
                         <div class="col-md-6">Subtotal</div>
-                        <div class="col-md-6 text-right">$@Model.Subtotal.ToString("N0")</div>
+                        <div class="col-md-6 text-right order-summary-subtotal">$@Model.Subtotal.ToString("N0")</div>
                     </div>
                     <div class="row">
                         <div class="col-md-6">Shipping</div>
-                        <div class="col-md-6 text-right">$@Model.Shipping.ToString("N0")</div>
+                        <div class="col-md-6 text-right order-summary-shipping">$@Model.Shipping.ToString("N0")</div>
                     </div>
                     <div class="row">
                         <div class="col-md-6">Tax</div>
-                        <div class="col-md-6 text-right">$@Model.Tax.ToString("N2")</div>
+                        <div class="col-md-6 text-right order-summary-tax">$@Model.Tax.ToString("N2")</div>
                     </div>
                     <hr />
                     <div class="row">
                         <div class="col-md-6"><strong>Total</strong></div>
-                        <div class="col-md-6 text-right"><strong>$@Model.Total.ToString("N2")</strong></div>
+                        <div class="col-md-6 text-right order-summary-total"><strong>$@Model.Total.ToString("N2")</strong></div>
                     </div>
                 </div>
                 <div class="panel-footer">
@@ -132,38 +132,69 @@
 
 @section scripts {
     <script>
-        function removeItem(id) {
-            if (confirm('Are you sure you want to remove this item from your cart?')) {
-                window.location.href = '@Url.Action("UpdateQuantity", "Cart")?id=' + id + '&quantity=0';
+        function updateCartTotals(data) {
+            if (data) {
+                $(".order-summary-subtotal").text(`$${data.subtotal.toLocaleString()}`);
+                $(".order-summary-shipping").text(`$${data.shipping.toLocaleString()}`);
+                $(".order-summary-tax").text(`$${data.tax.toFixed(2)}`);
+                $(".order-summary-total").text(`$${data.total.toFixed(2)}`);
+                if ($('#cart-count').length) {
+                    $('#cart-count').text(data.cartCount);
+                }
             }
         }
-
+        function removeItem(id) {
+            if (confirm('Are you sure you want to remove this item from your cart?')) {
+                $.post('@Url.Action("RemoveFromCart", "Cart")', { id: id }, function(data) {
+                    if (data.success) {
+                        $("#cart-row-" + id).remove();
+                        updateCartTotals(data);
+                        // If no items left, reload page to show empty cart message
+                        if ($('.cart-item').length === 0) {
+                            location.reload();
+                        }
+                    }
+                });
+            }
+        }
         function incrementQuantity(id) {
             var qtyInput = $('#qty-' + id);
             var currentQty = parseInt(qtyInput.val());
-            qtyInput.val(currentQty + 1);
+            var newQty = currentQty + 1;
+            qtyInput.val(newQty);
+            updateQuantityAjax(id, newQty);
         }
-
         function decrementQuantity(id) {
             var qtyInput = $('#qty-' + id);
             var currentQty = parseInt(qtyInput.val());
             if (currentQty > 1) {
-                qtyInput.val(currentQty - 1);
+                var newQty = currentQty - 1;
+                qtyInput.val(newQty);
+                updateQuantityAjax(id, newQty);
             }
         }
-
+        function updateQuantityAjax(id, qty) {
+            $.post('@Url.Action("UpdateQuantityAjax", "Cart")', { id: id, quantity: qty }, function(data) {
+                if (data.success) {
+                    if (qty > 0) {
+                        $('#item-total-' + id).text(`$${data.itemTotal.toLocaleString()}`);
+                    } else {
+                        $("#cart-row-" + id).remove();
+                    }
+                    updateCartTotals(data);
+                    if ($('.cart-item').length === 0) {
+                        location.reload();
+                    }
+                }
+            });
+        }
         function updateCart() {
-            var updates = [];
             $('.cart-item').each(function() {
                 var id = $(this).find('input[id^="qty-"]').attr('id').replace('qty-', '');
                 var qty = $(this).find('input[id^="qty-"]').val();
-                updates.push({ id: id, quantity: qty });
+                updateQuantityAjax(id, qty);
             });
-
-            // In a real application, you would send this data to the server
-            // For simplicity, we'll just reload the page
-            alert('Cart updated!');
-            window.location.reload();
         }
     </script>
+}
 }
