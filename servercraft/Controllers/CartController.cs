@@ -6,6 +6,7 @@ using System.Web.Mvc;
 using servercraft.Models;
 using servercraft.Models.Domain;
 using servercraft.Models.ViewModels;
+using System.Collections.Generic;
 
 namespace servercraft.Controllers
 {
@@ -291,6 +292,47 @@ namespace servercraft.Controllers
             });
         }
 
+        // POST: /Cart/UpdateCartBatch
+        [HttpPost]
+        public ActionResult UpdateCartBatch(List<CartUpdateItem> updates)
+        {
+            var cartId = GetCartId();
+            foreach (var update in updates)
+            {
+                var cartItem = db.CartItems.Include(c => c.Server).FirstOrDefault(c => c.CartId == cartId && c.ServerId == update.Id);
+                if (cartItem != null)
+                {
+                    if (update.Quantity > 0)
+                    {
+                        cartItem.Quantity = update.Quantity;
+                    }
+                    else
+                    {
+                        db.CartItems.Remove(cartItem);
+                    }
+                }
+            }
+            db.SaveChanges();
+            var cartItems = db.CartItems.Include(c => c.Server).Where(c => c.CartId == cartId).ToList();
+            var subtotal = cartItems.Sum(i => i.Server.Price * i.Quantity);
+            var shipping = 250m;
+            var tax = Math.Round(subtotal * 0.08m, 2);
+            var total = subtotal + shipping + tax;
+            var cartCount = cartItems.Sum(i => i.Quantity);
+            Session["CartCount"] = cartCount;
+            // Return updated totals and per-item totals
+            var items = cartItems.Select(i => new { id = i.ServerId, total = i.Server.Price * i.Quantity, quantity = i.Quantity }).ToList();
+            return Json(new {
+                success = true,
+                cartCount,
+                subtotal,
+                shipping,
+                tax,
+                total,
+                items
+            });
+        }
+
         // Helper method to get or create cart ID
         private string GetCartId()
         {
@@ -312,5 +354,11 @@ namespace servercraft.Controllers
             }
             base.Dispose(disposing);
         }
+    }
+
+    public class CartUpdateItem
+    {
+        public string Id { get; set; }
+        public int Quantity { get; set; }
     }
 }

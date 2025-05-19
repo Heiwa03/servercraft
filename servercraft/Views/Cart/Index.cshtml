@@ -51,7 +51,7 @@
                                         </span>
                                     </div>
                                 </div>
-                                <div class="col-md-2 text-right">
+                                <div class="col-md-2 text-right" id="item-total-@item.ServerId">
                                     $@item.Total.ToString("N0")
                                 </div>
                             </div>
@@ -141,7 +141,20 @@
                 if ($('#cart-count').length) {
                     $('#cart-count').text(data.cartCount);
                 }
+                if (data.items) {
+                    data.items.forEach(function(item) {
+                        $('#item-total-' + item.id).text(`$${item.total.toLocaleString()}`);
+                        $('#qty-' + item.id).val(item.quantity);
+                    });
+                }
             }
+        }
+        function showCartNotification(message, isSuccess) {
+            if ($('#cart-toast').length === 0) {
+                $('body').append('<div id="cart-toast" style="position:fixed;top:30px;right:30px;z-index:9999;display:none;"></div>');
+            }
+            var alertClass = isSuccess ? 'alert-success' : 'alert-danger';
+            $('#cart-toast').html(`<div class="alert ${alertClass}">${message}</div>`).fadeIn(200).delay(1500).fadeOut(400);
         }
         function removeItem(id) {
             if (confirm('Are you sure you want to remove this item from your cart?')) {
@@ -149,7 +162,6 @@
                     if (data.success) {
                         $("#cart-row-" + id).remove();
                         updateCartTotals(data);
-                        // If no items left, reload page to show empty cart message
                         if ($('.cart-item').length === 0) {
                             location.reload();
                         }
@@ -162,7 +174,6 @@
             var currentQty = parseInt(qtyInput.val());
             var newQty = currentQty + 1;
             qtyInput.val(newQty);
-            updateQuantityAjax(id, newQty);
         }
         function decrementQuantity(id) {
             var qtyInput = $('#qty-' + id);
@@ -170,31 +181,63 @@
             if (currentQty > 1) {
                 var newQty = currentQty - 1;
                 qtyInput.val(newQty);
-                updateQuantityAjax(id, newQty);
             }
         }
-        function updateQuantityAjax(id, qty) {
-            $.post('@Url.Action("UpdateQuantityAjax", "Cart")', { id: id, quantity: qty }, function(data) {
-                if (data.success) {
-                    if (qty > 0) {
-                        $('#item-total-' + id).text(`$${data.itemTotal.toLocaleString()}`);
-                    } else {
-                        $("#cart-row-" + id).remove();
-                    }
-                    updateCartTotals(data);
-                    if ($('.cart-item').length === 0) {
-                        location.reload();
-                    }
-                }
-            });
-        }
         function updateCart() {
+            var updates = [];
+            var valid = true;
             $('.cart-item').each(function() {
                 var id = $(this).find('input[id^="qty-"]').attr('id').replace('qty-', '');
                 var qty = $(this).find('input[id^="qty-"]').val();
-                updateQuantityAjax(id, qty);
+                qty = parseInt(qty);
+                if (isNaN(qty) || qty < 1) {
+                    valid = false;
+                    $(this).find('input[id^="qty-"]').addClass('is-invalid');
+                } else {
+                    $(this).find('input[id^="qty-"]').removeClass('is-invalid');
+                    updates.push({ Id: id, Quantity: qty });
+                }
+            });
+            if (!valid) {
+                showCartNotification('Please enter valid quantities (positive integers).', false);
+                return;
+            }
+            var $btn = $("button[onclick='updateCart()']");
+            $btn.prop('disabled', true);
+            var originalHtml = $btn.html();
+            $btn.html('<span class="spinner-border spinner-border-sm"></span> Updating...');
+            $.ajax({
+                url: '@Url.Action("UpdateCartBatch", "Cart")',
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify({ updates: updates }),
+                success: function(data) {
+                    if (data.success) {
+                        updateCartTotals(data);
+                        showCartNotification('Cart updated successfully!', true);
+                        // Remove any cart items that were deleted
+                        $('.cart-item').each(function() {
+                            var id = $(this).find('input[id^="qty-"]').attr('id').replace('qty-', '');
+                            var stillExists = data.items.some(function(item) { return item.id === id; });
+                            if (!stillExists) {
+                                $(this).remove();
+                            }
+                        });
+                        if ($('.cart-item').length === 0) {
+                            location.reload();
+                        }
+                    } else {
+                        showCartNotification('Failed to update cart.', false);
+                    }
+                },
+                error: function() {
+                    showCartNotification('Error updating cart.', false);
+                },
+                complete: function() {
+                    $btn.prop('disabled', false);
+                    $btn.html(originalHtml);
+                }
             });
         }
     </script>
-}
 }
