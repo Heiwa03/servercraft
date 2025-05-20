@@ -1,9 +1,15 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.35714.111
+# Visual Studio Version 17
+VisualStudioVersion = 17.12.35707.178 d17.12
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "servercraft", "servercraft\servercraft.csproj", "{47ABE166-E5F1-4CC1-9D9C-4E4BCD93394E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eUseControl.servercraft", "servercraft\eUseControl.servercraft.csproj", "{47ABE166-E5F1-4CC1-9D9C-4E4BCD93394E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eUseControl.BusinessLogic", "eUseControl.BusinessLogic\eUseControl.BusinessLogic.csproj", "{357659C4-E427-42D3-9079-8E4B2CE8E4FB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eUseControl.Domain", "eUseControl.Domain\eUseControl.Domain.csproj", "{5CB7671F-0129-48D6-B1B1-1D271CBD78DC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eUseControl.Helpers", "eUseControl.Helpers\eUseControl.Helpers.csproj", "{CA77580B-3190-4BA4-8F05-D40F3A7325F6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +21,18 @@ Global
 		{47ABE166-E5F1-4CC1-9D9C-4E4BCD93394E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{47ABE166-E5F1-4CC1-9D9C-4E4BCD93394E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{47ABE166-E5F1-4CC1-9D9C-4E4BCD93394E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{357659C4-E427-42D3-9079-8E4B2CE8E4FB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{357659C4-E427-42D3-9079-8E4B2CE8E4FB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{357659C4-E427-42D3-9079-8E4B2CE8E4FB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{357659C4-E427-42D3-9079-8E4B2CE8E4FB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5CB7671F-0129-48D6-B1B1-1D271CBD78DC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5CB7671F-0129-48D6-B1B1-1D271CBD78DC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5CB7671F-0129-48D6-B1B1-1D271CBD78DC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5CB7671F-0129-48D6-B1B1-1D271CBD78DC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CA77580B-3190-4BA4-8F05-D40F3A7325F6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CA77580B-3190-4BA4-8F05-D40F3A7325F6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CA77580B-3190-4BA4-8F05-D40F3A7325F6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CA77580B-3190-4BA4-8F05-D40F3A7325F6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
