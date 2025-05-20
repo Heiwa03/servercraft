@@ -1,8 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "YBmvYszGakw=",
+  "dgSpecHash": "Ap8amy8sXLA=",
   "success": true,
   "projectFilePath": "C:\\Users\\grigo\\Desktop\\servercraft\\eUseControl.Helpers\\eUseControl.Helpers.csproj",
-  "expectedPackageFiles": [],
+  "expectedPackageFiles": [
+    "C:\\Users\\grigo\\.nuget\\packages\\bootstrap\\5.3.6\\bootstrap.5.3.6.nupkg.sha512"
+  ],
   "logs": []
 }

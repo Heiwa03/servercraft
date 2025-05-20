@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.12.35707.178 d17.12
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eUseControl.servercraft", "servercraft\eUseControl.servercraft.csproj", "{47ABE166-E5F1-4CC1-9D9C-4E4BCD93394E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "servercraft", "servercraft\servercraft.csproj", "{47ABE166-E5F1-4CC1-9D9C-4E4BCD93394E}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eUseControl.BusinessLogic", "eUseControl.BusinessLogic\eUseControl.BusinessLogic.csproj", "{357659C4-E427-42D3-9079-8E4B2CE8E4FB}"
 EndProject

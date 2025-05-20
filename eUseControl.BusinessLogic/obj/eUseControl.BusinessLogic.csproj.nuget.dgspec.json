@@ -31,7 +31,11 @@
         "frameworks": {
           "net7.0": {
             "targetAlias": "net7.0",
-            "projectReferences": {}
+            "projectReferences": {
+              "C:\\Users\\grigo\\Desktop\\servercraft\\servercraft\\servercraft.csproj": {
+                "projectPath": "C:\\Users\\grigo\\Desktop\\servercraft\\servercraft\\servercraft.csproj"
+              }
+            }
           }
         },
         "warningProperties": {
@@ -49,6 +53,20 @@
       "frameworks": {
         "net7.0": {
           "targetAlias": "net7.0",
+          "dependencies": {
+            "Microsoft.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[7.0.0, )"
+            },
+            "Microsoft.EntityFrameworkCore.SqlServer": {
+              "target": "Package",
+              "version": "[7.0.0, )"
+            },
+            "bootstrap": {
+              "target": "Package",
+              "version": "[5.3.6, )"
+            }
+          },
           "imports": [
             "net461",
             "net462",
@@ -67,6 +85,22 @@
           },
           "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.102\\RuntimeIdentifierGraph.json"
         }
+      }
+    },
+    "C:\\Users\\grigo\\Desktop\\servercraft\\servercraft\\servercraft.csproj": {
+      "restore": {
+        "projectUniqueName": "C:\\Users\\grigo\\Desktop\\servercraft\\servercraft\\servercraft.csproj",
+        "projectName": "servercraft",
+        "projectPath": "C:\\Users\\grigo\\Desktop\\servercraft\\servercraft\\servercraft.csproj",
+        "UsingMicrosoftNETSdk": false,
+        "frameworks": {
+          "net461": {
+            "projectReferences": {}
+          }
+        }
+      },
+      "frameworks": {
+        "net461": {}
       }
     }
   }
