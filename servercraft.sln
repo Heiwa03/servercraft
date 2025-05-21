@@ -3,7 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.12.35707.178
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "servercraft", "servercraft\servercraft.csproj", "{47ABE166-E5F1-4CC1-9D9C-4E4BCD93394E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Servercraft.Web", "servercraft\Servercraft.Web.csproj", "{47ABE166-E5F1-4CC1-9D9C-4E4BCD93394E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Servercraft.Domain", "Servercraft.Domain\Servercraft.Domain.csproj", "{DAE5E3D3-0A84-4B8A-AFBB-00B78E16E44D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Servercraft.Model", "Servercraft.Model\Servercraft.Model.csproj", "{E8361090-F80F-4E20-A8C0-FE2843344364}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Servercraft.Data", "Servercraft.Data\Servercraft.Data.csproj", "{F2DA53E3-70C6-419D-BE68-768A4C39EE37}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +21,18 @@ Global
 		{47ABE166-E5F1-4CC1-9D9C-4E4BCD93394E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{47ABE166-E5F1-4CC1-9D9C-4E4BCD93394E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{47ABE166-E5F1-4CC1-9D9C-4E4BCD93394E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DAE5E3D3-0A84-4B8A-AFBB-00B78E16E44D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DAE5E3D3-0A84-4B8A-AFBB-00B78E16E44D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DAE5E3D3-0A84-4B8A-AFBB-00B78E16E44D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DAE5E3D3-0A84-4B8A-AFBB-00B78E16E44D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E8361090-F80F-4E20-A8C0-FE2843344364}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E8361090-F80F-4E20-A8C0-FE2843344364}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E8361090-F80F-4E20-A8C0-FE2843344364}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E8361090-F80F-4E20-A8C0-FE2843344364}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F2DA53E3-70C6-419D-BE68-768A4C39EE37}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F2DA53E3-70C6-419D-BE68-768A4C39EE37}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F2DA53E3-70C6-419D-BE68-768A4C39EE37}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F2DA53E3-70C6-419D-BE68-768A4C39EE37}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

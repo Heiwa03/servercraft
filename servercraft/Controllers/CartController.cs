@@ -3,12 +3,12 @@ using System;
 using System.Data.Entity;
 using System.Linq;
 using System.Web.Mvc;
-using servercraft.Models;
-using servercraft.Models.Domain;
-using servercraft.Models.ViewModels;
+using Servercraft.Domain.Entities;
+using Servercraft.Model.ViewModels;
+using Servercraft.Data.Context;
 using System.Collections.Generic;
 
-namespace servercraft.Controllers
+namespace Servercraft.Web.Controllers
 {
     public class CartController : Controller
     {

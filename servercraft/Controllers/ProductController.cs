@@ -6,12 +6,12 @@ using System.Net;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 using System.Collections.Generic;
-using servercraft.Models;
-using servercraft.Models.Repositories;
-using servercraft.Models.ViewModels;
-using servercraft.Models.Domain;
+using Servercraft.Domain.Entities;
+using Servercraft.Model.ViewModels;
+using Servercraft.Data.Repositories;
+using Servercraft.Data.Context;
 
-namespace servercraft.Controllers
+namespace Servercraft.Web.Controllers
 {
     public class ProductController : Controller
     {

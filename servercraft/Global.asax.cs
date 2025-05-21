@@ -9,9 +9,10 @@ using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
 using System.Data.Entity;
-using servercraft.Models;
+using Servercraft.Domain.Entities;
+using Servercraft.Data.Seeders;
 
-namespace servercraft
+namespace Servercraft.Web
 {
     public class MvcApplication : System.Web.HttpApplication
     {
@@ -20,7 +21,7 @@ namespace servercraft
             Database.SetInitializer(new ServerMarketInitializer());
 
             // One-time full specs seeder
-            // servercraft.FullSpecsSeeder.Seed();
+            // FullSpecsSeeder.Seed();
 
             AreaRegistration.RegisterAllAreas();
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);

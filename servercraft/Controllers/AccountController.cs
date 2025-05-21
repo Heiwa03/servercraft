@@ -2,14 +2,14 @@ using System;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 using System.Web.Security;
-using servercraft.Models;
-using servercraft.Models.Domain;
-using servercraft.Models.Repositories;
-using servercraft.Models.ViewModels;
-using servercraft.Services;
+using Servercraft.Domain.Entities;
+using Servercraft.Model.ViewModels;
+using Servercraft.Data.Repositories;
+using Servercraft.Data.Context;
+using Servercraft.Domain.Services;
 using System.Linq;
 
-namespace servercraft.Controllers
+namespace Servercraft.Web.Controllers
 {
     public class AccountController : Controller
     {

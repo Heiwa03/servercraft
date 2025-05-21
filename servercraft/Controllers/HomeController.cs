@@ -1,10 +1,11 @@
 ﻿// Controllers/HomeController.cs
 using System.Linq;
 using System.Web.Mvc;
-using servercraft.Models;
-using servercraft.Models.ViewModels;
+using Servercraft.Domain.Entities;
+using Servercraft.Model.ViewModels;
+using Servercraft.Data.Context;
 
-namespace servercraft.Controllers
+namespace Servercraft.Web.Controllers
 {
     public class HomeController : Controller
     {
