@@ -8,18 +8,18 @@ using System.Web.Mvc;
 using System.Collections.Generic;
 using Servercraft.Domain.Entities;
 using Servercraft.Model.ViewModels;
-using Servercraft.Data.Repositories;
+using Servercraft.Domain.Repositories;
 using Servercraft.Data.Context;
 
-namespace Servercraft.Web.Controllers
+namespace servercraft.Controllers
 {
     public class ProductController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
 
-        public ProductController()
+        public ProductController(IUnitOfWork unitOfWork)
         {
-            _unitOfWork = new UnitOfWork(new ServerMarketContext());
+            _unitOfWork = unitOfWork;
         }
 
         // GET: /Product/

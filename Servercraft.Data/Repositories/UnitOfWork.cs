@@ -1,94 +1,35 @@
+using System;
 using System.Threading.Tasks;
-using servercraft.Models.Domain;
+using Servercraft.Domain.Repositories;
+using Servercraft.Domain.Entities;
+using Servercraft.Data.Context;
 
 namespace Servercraft.Data.Repositories
 {
     public class UnitOfWork : IUnitOfWork
     {
         private readonly ServerMarketContext _context;
-        private Repository<Server> _servers;
-        private Repository<ServerSpecification> _serverSpecifications;
-        private Repository<ServerFullSpecs> _serverFullSpecs;
-        private Repository<CartItem> _cartItems;
-        private Repository<User> _users;
-        private Repository<Role> _roles;
+        private bool _disposed;
 
         public UnitOfWork(ServerMarketContext context)
         {
             _context = context;
+            Users = new Repository<User>(_context);
+            Roles = new Repository<Role>(_context);
+            UserRoles = new Repository<UserRole>(_context);
+            Servers = new Repository<Server>(_context);
+            CartItems = new Repository<CartItem>(_context);
+            ServerFullSpecs = new Repository<ServerFullSpecs>(_context);
+            ServerSpecifications = new Repository<ServerSpecification>(_context);
         }
 
-        public IRepository<Server> Servers
-        {
-            get
-            {
-                if (_servers == null)
-                {
-                    _servers = new Repository<Server>(_context);
-                }
-                return _servers;
-            }
-        }
-
-        public IRepository<ServerSpecification> ServerSpecifications
-        {
-            get
-            {
-                if (_serverSpecifications == null)
-                {
-                    _serverSpecifications = new Repository<ServerSpecification>(_context);
-                }
-                return _serverSpecifications;
-            }
-        }
-
-        public IRepository<ServerFullSpecs> ServerFullSpecs
-        {
-            get
-            {
-                if (_serverFullSpecs == null)
-                {
-                    _serverFullSpecs = new Repository<ServerFullSpecs>(_context);
-                }
-                return _serverFullSpecs;
-            }
-        }
-
-        public IRepository<CartItem> CartItems
-        {
-            get
-            {
-                if (_cartItems == null)
-                {
-                    _cartItems = new Repository<CartItem>(_context);
-                }
-                return _cartItems;
-            }
-        }
-
-        public IRepository<User> Users
-        {
-            get
-            {
-                if (_users == null)
-                {
-                    _users = new Repository<User>(_context);
-                }
-                return _users;
-            }
-        }
-
-        public IRepository<Role> Roles
-        {
-            get
-            {
-                if (_roles == null)
-                {
-                    _roles = new Repository<Role>(_context);
-                }
-                return _roles;
-            }
-        }
+        public IRepository<User> Users { get; }
+        public IRepository<Role> Roles { get; }
+        public IRepository<UserRole> UserRoles { get; }
+        public IRepository<Server> Servers { get; }
+        public IRepository<CartItem> CartItems { get; }
+        public IRepository<ServerFullSpecs> ServerFullSpecs { get; }
+        public IRepository<ServerSpecification> ServerSpecifications { get; }
 
         public async Task<int> CompleteAsync()
         {
@@ -97,7 +38,17 @@ namespace Servercraft.Data.Repositories
 
         public void Dispose()
         {
-            _context.Dispose();
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!_disposed && disposing)
+            {
+                _context.Dispose();
+            }
+            _disposed = true;
         }
     }
 } 

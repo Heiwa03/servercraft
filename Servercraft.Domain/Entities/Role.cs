@@ -10,6 +10,6 @@ namespace Servercraft.Domain.Entities
         [Required]
         [MaxLength(50)]
         public string Name { get; set; }
-        public virtual ICollection<UserRole> UserRoles { get; set; }
+        public virtual ICollection<Servercraft.Domain.Entities.UserRole> UserRoles { get; set; }
     }
 } 

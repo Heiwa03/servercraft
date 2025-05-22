@@ -7,12 +7,19 @@ using Servercraft.Domain.Entities;
 using Servercraft.Model.ViewModels;
 using Servercraft.Data.Context;
 using System.Collections.Generic;
+using Servercraft.Domain.Repositories;
 
-namespace Servercraft.Web.Controllers
+namespace servercraft.Controllers
 {
     public class CartController : Controller
     {
+        private readonly IUnitOfWork _unitOfWork;
         private readonly ServerMarketContext db = new ServerMarketContext();
+
+        public CartController(IUnitOfWork unitOfWork)
+        {
+            _unitOfWork = unitOfWork;
+        }
 
         // GET: /Cart/
         public ActionResult Index()

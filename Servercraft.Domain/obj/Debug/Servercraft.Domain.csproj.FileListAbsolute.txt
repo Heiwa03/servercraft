@@ -1,0 +1,17 @@
+E:\projects\servercraft\Servercraft.Domain\obj\Debug\Servercraft.Domain.csproj.AssemblyReference.cache
+E:\projects\servercraft\Servercraft.Domain\obj\Debug\Servercraft.Domain.csproj.CoreCompileInputs.cache
+E:\projects\servercraft\Servercraft.Domain\bin\Debug\Servercraft.Domain.dll.config
+E:\projects\servercraft\Servercraft.Domain\bin\Debug\Servercraft.Domain.dll
+E:\projects\servercraft\Servercraft.Domain\bin\Debug\Servercraft.Domain.pdb
+E:\projects\servercraft\Servercraft.Domain\bin\Debug\EntityFramework.dll
+E:\projects\servercraft\Servercraft.Domain\bin\Debug\EntityFramework.SqlServer.dll
+E:\projects\servercraft\Servercraft.Domain\bin\Debug\EntityFramework.xml
+E:\projects\servercraft\Servercraft.Domain\bin\Debug\EntityFramework.SqlServer.xml
+E:\projects\servercraft\Servercraft.Domain\obj\Debug\Servercr.B7768285.Up2Date
+E:\projects\servercraft\Servercraft.Domain\obj\Debug\Servercraft.Domain.dll
+E:\projects\servercraft\Servercraft.Domain\obj\Debug\Servercraft.Domain.pdb
+E:\projects\servercraft\Servercraft.Domain\bin\Debug\Microsoft.Owin.dll
+E:\projects\servercraft\Servercraft.Domain\bin\Debug\Microsoft.Owin.Security.dll
+E:\projects\servercraft\Servercraft.Domain\bin\Debug\Owin.dll
+E:\projects\servercraft\Servercraft.Domain\bin\Debug\Microsoft.Owin.xml
+E:\projects\servercraft\Servercraft.Domain\bin\Debug\Microsoft.Owin.Security.xml

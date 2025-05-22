@@ -10,23 +10,26 @@ using System.Web.Optimization;
 using System.Web.Routing;
 using System.Data.Entity;
 using Servercraft.Domain.Entities;
-using Servercraft.Data.Seeders;
+using Servercraft.Data.Initializers;
+using Servercraft.Data.Context;
+using Servercraft.Domain.Repositories;
 
-namespace Servercraft.Web
+namespace servercraft
 {
     public class MvcApplication : System.Web.HttpApplication
     {
         protected void Application_Start()
         {
-            Database.SetInitializer(new ServerMarketInitializer());
-
-            // One-time full specs seeder
-            // FullSpecsSeeder.Seed();
-
             AreaRegistration.RegisterAllAreas();
-            FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
-            BundleConfig.RegisterBundles(BundleTable.Bundles);
+            BundleConfig.RegisterBundles(System.Web.Optimization.BundleTable.Bundles);
+
+            // Initialize database
+            System.Data.Entity.Database.SetInitializer(new ServerMarketInitializer());
+            using (var context = new ServerMarketContext())
+            {
+                context.Database.Initialize(true);
+            }
         }
 
         protected void Application_BeginRequest(object sender, EventArgs e)

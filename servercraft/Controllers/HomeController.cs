@@ -1,33 +1,68 @@
 ﻿// Controllers/HomeController.cs
+using System;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Web.Mvc;
 using Servercraft.Domain.Entities;
-using Servercraft.Model.ViewModels;
+using Servercraft.Domain.Repositories;
 using Servercraft.Data.Context;
+using Servercraft.Model.ViewModels;
 
-namespace Servercraft.Web.Controllers
+namespace servercraft.Controllers
 {
     public class HomeController : Controller
     {
-        private ServerMarketContext db = new ServerMarketContext();
+        private readonly IUnitOfWork _unitOfWork;
 
-        public ActionResult Index()
+        public HomeController(IUnitOfWork unitOfWork)
         {
-            var featuredServers = db.Servers
-                .ToList()
-                .Select(ServerViewModel.FromDomain)
-                .ToList();
-
-            return View(featuredServers);
+            _unitOfWork = unitOfWork;
         }
 
-        public ActionResult QuickView(string id)
+        public async Task<ActionResult> Index()
         {
-            var server = db.Servers.Find(id);
+            var servers = await _unitOfWork.Servers.GetAllAsync();
+            var viewModel = new HomeViewModel
+            {
+                FeaturedServers = servers.Take(6).Select(s => new ServerViewModel
+                {
+                    Id = s.Id,
+                    Name = s.Name,
+                    Description = s.Description,
+                    Price = s.Price,
+                    OldPrice = s.OldPrice,
+                    ImageUrl = s.ImageUrl,
+                    Badge = s.Badge,
+                    InStock = s.InStock,
+                    Category = s.Category
+                }).ToList()
+            };
+
+            return View(viewModel);
+        }
+
+        public async Task<ActionResult> QuickView(string id)
+        {
+            var server = await _unitOfWork.Servers.GetByIdAsync(id);
             if (server == null)
             {
                 return HttpNotFound();
             }
+
+            var viewModel = new ServerViewModel
+            {
+                Id = server.Id,
+                Name = server.Name,
+                Description = server.Description,
+                Price = server.Price,
+                OldPrice = server.OldPrice,
+                ImageUrl = server.ImageUrl,
+                Badge = server.Badge,
+                InStock = server.InStock,
+                Category = server.Category,
+                Specifications = server.Specifications.Select(s => s.Description).ToList(),
+                FullSpecs = server.FullSpecs
+            };
 
             var viewModel = ServerViewModel.FromDomain(server);
             return PartialView("_QuickView", viewModel);
@@ -47,7 +82,7 @@ namespace Servercraft.Web.Controllers
         {
             if (disposing)
             {
-                db.Dispose();
+                _unitOfWork.Dispose();
             }
             base.Dispose(disposing);
         }

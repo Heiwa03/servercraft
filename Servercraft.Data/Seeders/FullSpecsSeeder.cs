@@ -1,29 +1,31 @@
+using System;
 using System.Linq;
-using Servercraft.Domain.Entities;
+using System.Threading.Tasks;
 using Servercraft.Data.Context;
+using Servercraft.Domain.Entities;
 
 namespace Servercraft.Data.Seeders
 {
-    public class FullSpecsSeeder
+    public static class FullSpecsSeeder
     {
-        public static void Seed()
+        public static async Task Seed()
         {
-            using (var db = new ServerMarketContext())
+            using (var context = new ServerMarketContext())
             {
                 // Delete unwanted ServerFullSpecs by processor name
-                var specsToDelete = db.Set<ServerFullSpecs>()
+                var specsToDelete = context.ServerFullSpecs
                     .Where(f =>
                         f.Processor == "Intel Xeon Gold 6248R 3.0GHz, 24C/48T" ||
                         f.Processor == "Intel Xeon Platinum 8380 2.3GHz, 40C/80T"
                     ).ToList();
                 foreach (var spec in specsToDelete)
                 {
-                    db.ServerFullSpecs.Remove(spec);
+                    context.ServerFullSpecs.Remove(spec);
                 }
-                db.SaveChanges();
+                await context.SaveChangesAsync();
 
                 // Dell PowerEdge T40
-                var t40 = db.Servers.FirstOrDefault(s => s.Name == "Dell PowerEdge T40");
+                var t40 = context.Servers.FirstOrDefault(s => s.Name == "Dell PowerEdge T40");
                 if (t40 != null)
                 {
                     t40.FullSpecs = new ServerFullSpecs
@@ -39,7 +41,7 @@ namespace Servercraft.Data.Seeders
                 }
 
                 // HP ProLiant ML30
-                var ml30 = db.Servers.FirstOrDefault(s => s.Name == "HP ProLiant ML30");
+                var ml30 = context.Servers.FirstOrDefault(s => s.Name == "HP ProLiant ML30");
                 if (ml30 != null)
                 {
                     ml30.FullSpecs = new ServerFullSpecs
@@ -55,7 +57,7 @@ namespace Servercraft.Data.Seeders
                 }
 
                 // StorageBox 8TB
-                var storageBox = db.Servers.FirstOrDefault(s => s.Name == "StorageBox 8TB");
+                var storageBox = context.Servers.FirstOrDefault(s => s.Name == "StorageBox 8TB");
                 if (storageBox != null)
                 {
                     storageBox.FullSpecs = new ServerFullSpecs
@@ -71,7 +73,7 @@ namespace Servercraft.Data.Seeders
                 }
 
                 // Lenovo ThinkSystem SR650
-                var sr650 = db.Servers.FirstOrDefault(s => s.Name == "Lenovo ThinkSystem SR650");
+                var sr650 = context.Servers.FirstOrDefault(s => s.Name == "Lenovo ThinkSystem SR650");
                 if (sr650 != null)
                 {
                     sr650.FullSpecs = new ServerFullSpecs
@@ -87,7 +89,7 @@ namespace Servercraft.Data.Seeders
                 }
 
                 // Fujitsu PRIMERGY TX1330
-                var tx1330 = db.Servers.FirstOrDefault(s => s.Name == "Fujitsu PRIMERGY TX1330");
+                var tx1330 = context.Servers.FirstOrDefault(s => s.Name == "Fujitsu PRIMERGY TX1330");
                 if (tx1330 != null)
                 {
                     tx1330.FullSpecs = new ServerFullSpecs
@@ -103,7 +105,7 @@ namespace Servercraft.Data.Seeders
                 }
 
                 // CloudX Mini
-                var cloudX = db.Servers.FirstOrDefault(s => s.Name == "CloudX Mini");
+                var cloudX = context.Servers.FirstOrDefault(s => s.Name == "CloudX Mini");
                 if (cloudX != null)
                 {
                     cloudX.FullSpecs = new ServerFullSpecs
@@ -119,7 +121,7 @@ namespace Servercraft.Data.Seeders
                 }
 
                 // Lenovo ThinkSystem ST50
-                var st50 = db.Servers.FirstOrDefault(s => s.Name == "Lenovo ThinkSystem ST50");
+                var st50 = context.Servers.FirstOrDefault(s => s.Name == "Lenovo ThinkSystem ST50");
                 if (st50 != null)
                 {
                     st50.FullSpecs = new ServerFullSpecs
@@ -135,7 +137,7 @@ namespace Servercraft.Data.Seeders
                 }
 
                 // SuperMicro E302-9D
-                var e302 = db.Servers.FirstOrDefault(s => s.Name == "SuperMicro E302-9D");
+                var e302 = context.Servers.FirstOrDefault(s => s.Name == "SuperMicro E302-9D");
                 if (e302 != null)
                 {
                     e302.FullSpecs = new ServerFullSpecs
@@ -151,7 +153,7 @@ namespace Servercraft.Data.Seeders
                 }
 
                 // Dell PowerEdge R740
-                var r740 = db.Servers.FirstOrDefault(s => s.Name == "Dell PowerEdge R740");
+                var r740 = context.Servers.FirstOrDefault(s => s.Name == "Dell PowerEdge R740");
                 if (r740 != null)
                 {
                     r740.FullSpecs = new ServerFullSpecs
@@ -166,7 +168,7 @@ namespace Servercraft.Data.Seeders
                     };
                 }
 
-                db.SaveChanges();
+                await context.SaveChangesAsync();
             }
         }
     }

@@ -5,8 +5,9 @@ using System.Data.Entity;
 using System.Threading.Tasks;
 using Servercraft.Domain.Entities;
 using Servercraft.Data.Repositories;
+using Servercraft.Data.Context;
 
-namespace Servercraft.Data
+namespace Servercraft.Data.Initializers
 {
     public class ServerMarketInitializer : DropCreateDatabaseIfModelChanges<ServerMarketContext>
     {

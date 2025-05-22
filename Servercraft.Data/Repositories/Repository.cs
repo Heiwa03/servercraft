@@ -4,6 +4,7 @@ using System.Data.Entity;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
+using Servercraft.Domain.Repositories;
 
 namespace Servercraft.Data.Repositories
 {

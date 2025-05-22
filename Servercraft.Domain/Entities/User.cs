@@ -62,37 +62,4 @@ namespace Servercraft.Domain.Entities
             IsActive = true;
         }
     }
-
-    public class Role
-    {
-        [Key]
-        public int Id { get; set; }
-
-        [Required]
-        [StringLength(50)]
-        [Index(IsUnique = true)]
-        public string Name { get; set; }
-
-        public virtual ICollection<UserRole> UserRoles { get; set; }
-
-        public Role()
-        {
-            UserRoles = new HashSet<UserRole>();
-        }
-    }
-
-    public class UserRole
-    {
-        [Key]
-        public int Id { get; set; }
-
-        public int UserId { get; set; }
-        public int RoleId { get; set; }
-
-        [ForeignKey("UserId")]
-        public virtual User User { get; set; }
-
-        [ForeignKey("RoleId")]
-        public virtual Role Role { get; set; }
-    }
 } 

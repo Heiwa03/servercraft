@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Servercraft.Domain.Entities
 {
@@ -42,6 +43,7 @@ namespace Servercraft.Domain.Entities
 
         public Server()
         {
+            Id = Guid.NewGuid().ToString();
             Specifications = new List<ServerSpecification>();
         }
     }

@@ -1,39 +1,37 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
+using System.Web;
 using System.Web.Mvc;
-using System.Web.Security;
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.Owin;
+using Microsoft.Owin.Security;
 using Servercraft.Domain.Entities;
 using Servercraft.Model.ViewModels;
-using Servercraft.Data.Repositories;
+using Servercraft.Domain.Repositories;
+using Servercraft.Data.Services;
 using Servercraft.Data.Context;
-using Servercraft.Domain.Services;
-using System.Linq;
+using System.Security.Claims;
 
-namespace Servercraft.Web.Controllers
+namespace servercraft.Controllers
 {
+    [Authorize]
     public class AccountController : Controller
     {
         private readonly IAuthService _authService;
         private readonly IUnitOfWork _unitOfWork;
 
-        public AccountController()
+        public AccountController(IAuthService authService, IUnitOfWork unitOfWork)
         {
-            _unitOfWork = new UnitOfWork(new ServerMarketContext());
-            _authService = new AuthService(_unitOfWork);
+            _authService = authService;
+            _unitOfWork = unitOfWork;
         }
 
         [AllowAnonymous]
-        public ActionResult Login(string returnUrl, string username = null, string password = null)
+        public ActionResult Login(string returnUrl)
         {
             ViewBag.ReturnUrl = returnUrl;
-            
-            // Handle direct admin login
-            if (!string.IsNullOrEmpty(username) && !string.IsNullOrEmpty(password))
-            {
-                var model = new LoginViewModel { Username = username, Password = password };
-                return Login(model, returnUrl).Result;
-            }
-            
             return View();
         }
 
@@ -47,30 +45,22 @@ namespace Servercraft.Web.Controllers
                 return View(model);
             }
 
-            try
+            var result = await _authService.ValidateUserAsync(model.Username, model.Password);
+            if (result)
             {
-                var user = await _authService.AuthenticateAsync(model.Username, model.Password);
+                var user = (await _unitOfWork.Users.FindAsync(u => u.Username == model.Username)).FirstOrDefault();
                 if (user != null)
                 {
-                    FormsAuthentication.SetAuthCookie(user.Username, model.RememberMe);
-                    
-                    // Check if user is administrator
-                    if (await _authService.IsInRoleAsync(user.Id, "Administrator"))
-                    {
-                        return RedirectToAction("AdminDashboard", "Account");
-                    }
-                    
-                    return RedirectToAction("Profile", "Account");
-                }
+                    var identity = new ClaimsIdentity(new[] { new Claim(ClaimTypes.Name, user.Username) }, DefaultAuthenticationTypes.ApplicationCookie);
+                    var authManager = HttpContext.GetOwinContext().Authentication;
+                    authManager.SignIn(new AuthenticationProperties { IsPersistent = model.RememberMe }, identity);
 
-                ModelState.AddModelError("", "Invalid username or password.");
-                return View(model);
+                    return RedirectToLocal(returnUrl);
+                }
             }
-            catch
-            {
-                ModelState.AddModelError("", "An error occurred while processing your request.");
-                return View(model);
-            }
+
+            ModelState.AddModelError("", "Invalid username or password.");
+            return View(model);
         }
 
         [AllowAnonymous]
@@ -84,36 +74,103 @@ namespace Servercraft.Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Register(RegisterViewModel model)
         {
+            if (ModelState.IsValid)
+            {
+                var result = await _authService.RegisterUserAsync(model.Username, model.Password, model.Email);
+                if (result)
+                {
+                    return RedirectToAction("Login", new { message = "Registration successful. Please log in." });
+                }
+                else
+                {
+                    ModelState.AddModelError("", "Username or email already exists.");
+                }
+            }
+
+            return View(model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult LogOff()
+        {
+            var authManager = HttpContext.GetOwinContext().Authentication;
+            authManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
+            return RedirectToAction("Index", "Home");
+        }
+
+        [AllowAnonymous]
+        public ActionResult ForgotPassword()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> ForgotPassword(ForgotPasswordViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var user = await _unitOfWork.Users.FindAsync(u => u.Email == model.Email);
+                if (user == null)
+                {
+                    // Don't reveal that the user does not exist
+                    return View("ForgotPasswordConfirmation");
+                }
+
+                // For more information on how to enable account confirmation and password reset please visit https://go.microsoft.com/fwlink/?LinkID=320771
+                // Send an email with this link
+                string code = await _authService.GeneratePasswordResetTokenAsync(user.Id);
+                var callbackUrl = Url.Action("ResetPassword", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
+                await _authService.SendEmailAsync(user.Id, "Reset Password", "Please reset your password by clicking <a href=\"" + callbackUrl + "\">here</a>");
+                return RedirectToAction("ForgotPasswordConfirmation", "Account");
+            }
+
+            // If we got this far, something failed, redisplay form
+            return View(model);
+        }
+
+        [AllowAnonymous]
+        public ActionResult ForgotPasswordConfirmation()
+        {
+            return View();
+        }
+
+        [AllowAnonymous]
+        public ActionResult ResetPassword(string code)
+        {
+            return code == null ? View("Error") : View();
+        }
+
+        [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> ResetPassword(ResetPasswordViewModel model)
+        {
             if (!ModelState.IsValid)
             {
                 return View(model);
             }
-
-            try
+            var user = await _unitOfWork.Users.FindAsync(u => u.Email == model.Email);
+            if (user == null)
             {
-                await _authService.RegisterAsync(
-                    model.Username,
-                    model.Password,
-                    model.Email,
-                    model.FirstName,
-                    model.LastName
-                );
-
-                FormsAuthentication.SetAuthCookie(model.Username, false);
-                return RedirectToAction("Index", "Home");
+                // Don't reveal that the user does not exist
+                return RedirectToAction("ResetPasswordConfirmation", "Account");
             }
-            catch (Exception ex)
+            var result = await _authService.ResetPasswordAsync(user.Id, model.OldPassword, model.NewPassword);
+            if (result.Succeeded)
             {
-                ModelState.AddModelError("", ex.Message);
-                return View(model);
+                return RedirectToAction("ResetPasswordConfirmation", "Account");
             }
+            AddErrors(result);
+            return View();
         }
 
-        [Authorize]
-        public ActionResult Logout()
+        [AllowAnonymous]
+        public ActionResult ResetPasswordConfirmation()
         {
-            FormsAuthentication.SignOut();
-            return RedirectToAction("Index", "Home");
+            return View();
         }
 
         [Authorize]
@@ -133,7 +190,7 @@ namespace Servercraft.Web.Controllers
             }
 
             var username = User.Identity.Name;
-            var user = await _unitOfWork.Users.SingleOrDefaultAsync(u => u.Username == username);
+            var user = (await _unitOfWork.Users.FindAsync(u => u.Username == username)).FirstOrDefault();
 
             if (user == null)
             {
@@ -176,7 +233,7 @@ namespace Servercraft.Web.Controllers
         public async Task<ActionResult> AdminDashboard()
         {
             var username = User.Identity.Name;
-            var user = await _unitOfWork.Users.SingleOrDefaultAsync(u => u.Username == username);
+            var user = (await _unitOfWork.Users.FindAsync(u => u.Username == username)).FirstOrDefault();
             
             if (user == null || !await _authService.IsInRoleAsync(user.Id, "Administrator"))
             {
@@ -204,7 +261,7 @@ namespace Servercraft.Web.Controllers
             {
                 Task.Run(async () =>
                 {
-                    var adminRole = await _unitOfWork.Roles.SingleOrDefaultAsync(r => r.Name == "Administrator");
+                    var adminRole = (await _unitOfWork.Roles.FindAsync(r => r.Name == "Administrator")).FirstOrDefault();
                     if (adminRole == null)
                     {
                         adminRole = new Role { Name = "Administrator" };
@@ -212,18 +269,16 @@ namespace Servercraft.Web.Controllers
                         await _unitOfWork.CompleteAsync();
                     }
 
-                    var adminUser = await _unitOfWork.Users.SingleOrDefaultAsync(u => u.Username == "admin");
+                    var adminUser = (await _unitOfWork.Users.FindAsync(u => u.Username == "admin")).FirstOrDefault();
                     if (adminUser == null)
                     {
-                        await _authService.RegisterAsync(
+                        await _authService.RegisterUserAsync(
                             "admin",
                             "admin",
-                            "admin@servercraft.com",
-                            "System",
-                            "Administrator"
+                            "admin@servercraft.com"
                         );
 
-                        adminUser = await _unitOfWork.Users.SingleOrDefaultAsync(u => u.Username == "admin");
+                        adminUser = (await _unitOfWork.Users.FindAsync(u => u.Username == "admin")).FirstOrDefault();
                         if (adminUser != null)
                         {
                             adminUser.UserRoles.Add(new UserRole { Role = adminRole });
@@ -243,11 +298,11 @@ namespace Servercraft.Web.Controllers
             }
         }
 
-        protected override void Dispose(bool disposing)
+        protected new void Dispose(bool disposing)
         {
             if (disposing)
             {
-                _unitOfWork?.Dispose();
+                _unitOfWork.Dispose();
             }
             base.Dispose(disposing);
         }
