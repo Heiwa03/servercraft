@@ -10,16 +10,21 @@ using servercraft.Models;
 using servercraft.Models.Repositories;
 using servercraft.Models.ViewModels;
 using servercraft.Models.Domain;
+using eUseControl.BusinessLogic.Services;
+using eUseControl.BusinessLogic.Interfaces.Services;
+using eUseControl.BusinessLogic.Interfaces.Controllers;
 
 namespace servercraft.Controllers
 {
-    public class ProductController : Controller
+    public class ProductController : Controller, IProductController
     {
+        private readonly IProductService _productService;
         private readonly IUnitOfWork _unitOfWork;
 
-        public ProductController()
+        public ProductController(IProductService productService, IUnitOfWork unitOfWork)
         {
-            _unitOfWork = new UnitOfWork(new ServerMarketContext());
+            _productService = productService;
+            _unitOfWork = unitOfWork;
         }
 
         // GET: /Product/
@@ -27,9 +32,8 @@ namespace servercraft.Controllers
         {
             try
             {
-                var servers = await _unitOfWork.Servers.GetAllAsync().ConfigureAwait(false);
-                var viewModels = servers.Select(ServerViewModel.FromDomain).ToList();
-                return View(viewModels);
+                var servers = await _productService.GetAllServersAsync();
+                return View(servers.ToList());
             }
             catch
             {
@@ -49,22 +53,20 @@ namespace servercraft.Controllers
 
             try
             {
-                var server = await _unitOfWork.Servers.GetByIdAsync(id).ConfigureAwait(false);
+                var server = await _productService.GetServerByIdAsync(id);
                 if (server == null)
                 {
                     return HttpNotFound();
                 }
 
-                var viewModel = ServerViewModel.FromDomain(server);
-
                 // Get related products
-                var relatedServers = await _unitOfWork.Servers.FindAsync(s => s.Id != id).ConfigureAwait(false);
+                var relatedServers = await _unitOfWork.Servers.FindAsync(s => s.Id != id);
                 ViewBag.RelatedServers = relatedServers
                     .Take(4)
                     .Select(ServerViewModel.FromDomain)
                     .ToList();
 
-                return View(viewModel);
+                return View(server);
             }
             catch
             {
@@ -76,16 +78,9 @@ namespace servercraft.Controllers
         // GET: /Product/Search
         public async Task<ActionResult> Search(string query)
         {
-            if (string.IsNullOrWhiteSpace(query))
-            {
-                return View("SearchResults", new List<ServerViewModel>());
-            }
-
-            query = query.Trim().ToLower();
-            var servers = await _unitOfWork.Servers.FindAsync(s => s.Name.ToLower().IndexOf(query) >= 0);
-            var viewModels = servers.Select(ServerViewModel.FromDomain).ToList();
+            var servers = await _productService.SearchServersAsync(query);
             ViewBag.Query = query;
-            return View("SearchResults", viewModels);
+            return View("SearchResults", servers.ToList());
         }
 
         [Authorize]
@@ -106,10 +101,11 @@ namespace servercraft.Controllers
                 return RedirectToAction("Index", "Home");
             if (ModelState.IsValid)
             {
-                model.Id = Guid.NewGuid().ToString();
-                await _unitOfWork.Servers.AddAsync(model);
-                await _unitOfWork.CompleteAsync();
-                return RedirectToAction("Index");
+                var success = await _productService.CreateServerAsync(model);
+                if (success)
+                {
+                    return RedirectToAction("Index");
+                }
             }
             return View(model);
         }
