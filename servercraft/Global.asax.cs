@@ -26,6 +26,7 @@ namespace servercraft
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
+            DependencyConfig.RegisterDependencies();
         }
 
         protected void Application_BeginRequest(object sender, EventArgs e)

@@ -1253,8 +1253,25 @@
           }
         }
       },
+      "eUseControl.Domain/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v7.0",
+        "dependencies": {
+          "bootstrap": "5.3.6"
+        },
+        "compile": {
+          "bin/placeholder/eUseControl.Domain.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/eUseControl.Domain.dll": {}
+        }
+      },
       "servercraft/1.0.0": {
         "type": "project",
+        "dependencies": {
+          "eUseControl.BusinessLogic": "1.0.0",
+          "eUseControl.Domain": "1.0.0"
+        },
         "compile": {
           "bin/placeholder/servercraft.dll": {}
         },
@@ -3497,6 +3514,11 @@
         "version.txt"
       ]
     },
+    "eUseControl.Domain/1.0.0": {
+      "type": "project",
+      "path": "../eUseControl.Domain/eUseControl.Domain.csproj",
+      "msbuildProject": "../eUseControl.Domain/eUseControl.Domain.csproj"
+    },
     "servercraft/1.0.0": {
       "type": "project",
       "path": "../servercraft/servercraft.csproj",
@@ -3597,5 +3619,16 @@
         "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.102\\RuntimeIdentifierGraph.json"
       }
     }
-  }
+  },
+  "logs": [
+    {
+      "code": "NU1108",
+      "level": "Error",
+      "message": "Cycle detected. \r\n  eUseControl.BusinessLogic -> servercraft -> eUseControl.BusinessLogic.",
+      "libraryId": "eUseControl.BusinessLogic",
+      "targetGraphs": [
+        "net7.0"
+      ]
+    }
+  ]
 }
