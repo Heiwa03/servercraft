@@ -1,35 +1,42 @@
 ﻿// Controllers/HomeController.cs
-using System.Linq;
+using System;
+using System.Threading.Tasks;
 using System.Web.Mvc;
 using servercraft.Models;
 using servercraft.Models.ViewModels;
+using eUseControl.BusinessLogic.Services;
+using servercraft.Models.Repositories;
+using eUseControl.Domain.Interfaces.Controllers;
+using eUseControl.Domain.Interfaces.Services;
 
 namespace servercraft.Controllers
 {
-    public class HomeController : Controller
+    public class HomeController : Controller, IHomeController
     {
-        private ServerMarketContext db = new ServerMarketContext();
+        private readonly IHomeService _homeService;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public ActionResult Index()
+        public HomeController(IHomeService homeService, IUnitOfWork unitOfWork)
         {
-            var featuredServers = db.Servers
-                .ToList()
-                .Select(ServerViewModel.FromDomain)
-                .ToList();
+            _homeService = homeService;
+            _unitOfWork = unitOfWork;
+        }
 
+        public async Task<ActionResult> Index()
+        {
+            var featuredServers = await _homeService.GetFeaturedServersAsync();
             return View(featuredServers);
         }
 
-        public ActionResult QuickView(string id)
+        public async Task<ActionResult> QuickView(string id)
         {
-            var server = db.Servers.Find(id);
+            var server = await _homeService.GetServerDetailsAsync(id);
             if (server == null)
             {
                 return HttpNotFound();
             }
 
-            var viewModel = ServerViewModel.FromDomain(server);
-            return PartialView("_QuickView", viewModel);
+            return PartialView("_QuickView", server);
         }
 
         public ActionResult About()
@@ -46,7 +53,7 @@ namespace servercraft.Controllers
         {
             if (disposing)
             {
-                db.Dispose();
+                _unitOfWork.Dispose();
             }
             base.Dispose(disposing);
         }
