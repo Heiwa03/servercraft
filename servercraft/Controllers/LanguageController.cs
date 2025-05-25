@@ -1,28 +1,23 @@
 using System;
-using System.Globalization;
-using System.Threading;
-using System.Web;
 using System.Web.Mvc;
+using eUseControl.BusinessLogic.Services;
+using eUseControl.Domain.Interfaces.Controllers;
+using eUseControl.Domain.Interfaces.Services;
 
 namespace servercraft.Controllers
 {
-    public class LanguageController : Controller
+    public class LanguageController : Controller, ILanguageController
     {
+        private readonly ILanguageService _languageService;
+
+        public LanguageController(ILanguageService languageService)
+        {
+            _languageService = languageService;
+        }
+
         public ActionResult Change(string culture)
         {
-            if (culture != null)
-            {
-                var cultureInfo = new CultureInfo(culture);
-                Thread.CurrentThread.CurrentCulture = cultureInfo;
-                Thread.CurrentThread.CurrentUICulture = cultureInfo;
-
-                var cookie = new HttpCookie("_culture", culture)
-                {
-                    Expires = DateTime.Now.AddYears(1)
-                };
-                Response.Cookies.Add(cookie);
-            }
-
+            _languageService.SetCulture(culture);
             return Redirect(Request.UrlReferrer?.ToString() ?? "~/");
         }
     }
