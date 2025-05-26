@@ -16,10 +16,10 @@ namespace servercraft.Controllers
         private readonly IAuthService _authService;
         private readonly IUnitOfWork _unitOfWork;
 
-        public AccountController()
+        public AccountController(IAuthService authService, IUnitOfWork unitOfWork)
         {
-            _unitOfWork = new UnitOfWork(new ServerMarketContext());
-            _authService = new AuthService(_unitOfWork);
+            _authService = authService;
+            _unitOfWork = unitOfWork;
         }
 
         [AllowAnonymous]

@@ -21,6 +21,7 @@ namespace servercraft
             container.RegisterType<IUnitOfWork, UnitOfWork>(new HierarchicalLifetimeManager());
 
             // Register Services
+            container.RegisterType<IAuthService, AuthService>();
             container.RegisterType<ICartService, CartService>();
             container.RegisterType<IHomeService, HomeService>();
             container.RegisterType<ILanguageService, LanguageService>();
